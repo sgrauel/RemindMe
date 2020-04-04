@@ -1,6 +1,7 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
+import { Video } from "expo-av";
 import * as Permissions from 'expo-permissions';
 
 import styles from './styles';
@@ -16,6 +17,7 @@ export default class CameraPage extends React.Component {
         hasCameraPermission: null,
         cameraType: Camera.Constants.Type.back,
         flashMode: Camera.Constants.FlashMode.off,
+        replayMode: false
     };
 
     setFlashMode = (flashMode) => this.setState({ flashMode });
@@ -29,12 +31,12 @@ export default class CameraPage extends React.Component {
 
     handleShortCapture = async () => {
         const photoData = await this.camera.takePictureAsync();
-        this.setState({ capturing: false, captures: [photoData, ...this.state.captures] })
+        this.setState({ capturing: false, captures: [photoData, ...this.state.captures] });
     };
 
     handleLongCapture = async () => {
         const videoData = await this.camera.recordAsync();
-        this.setState({ capturing: false, captures: [videoData, ...this.state.captures] });
+        this.setState({ capturing: false, captures: [videoData, ...this.state.captures], replayMode: true });
     };
 
     async componentDidMount() {
@@ -46,7 +48,7 @@ export default class CameraPage extends React.Component {
     };
 
     render() {
-        const { hasCameraPermission, flashMode, cameraType, capturing, captures } = this.state;
+        const { hasCameraPermission, flashMode, cameraType, capturing, captures, replayMode  } = this.state;
 
         if (hasCameraPermission === null) {
             return <View />;
@@ -54,31 +56,50 @@ export default class CameraPage extends React.Component {
             return <Text>Access to camera has been denied.</Text>;
         }
 
-        return (
-            <React.Fragment>
-                <View>
-                    <Camera
-                        type={cameraType}
+        if (!replayMode) {
+            return (
+                <React.Fragment>
+                    <View>
+                        <Camera
+                            type={cameraType}
+                            flashMode={flashMode}
+                            style={styles.preview}
+                            ref={camera => this.camera = camera}
+                        />
+                    </View>
+
+                    {captures.length > 0 && <Gallery captures={captures}/>}
+
+                    <Toolbar 
+                        capturing={capturing}
                         flashMode={flashMode}
-                        style={styles.preview}
-                        ref={camera => this.camera = camera}
+                        cameraType={cameraType}
+                        setFlashMode={this.setFlashMode}
+                        setCameraType={this.setCameraType}
+                        onCaptureIn={this.handleCaptureIn}
+                        onCaptureOut={this.handleCaptureOut}
+                        onLongCapture={this.handleLongCapture}
+                        onShortCapture={this.handleShortCapture}
                     />
-                </View>
-
-                {captures.length > 0 && <Gallery captures={captures}/>}
-
-                <Toolbar 
-                    capturing={capturing}
-                    flashMode={flashMode}
-                    cameraType={cameraType}
-                    setFlashMode={this.setFlashMode}
-                    setCameraType={this.setCameraType}
-                    onCaptureIn={this.handleCaptureIn}
-                    onCaptureOut={this.handleCaptureOut}
-                    onLongCapture={this.handleLongCapture}
-                    onShortCapture={this.handleShortCapture}
-                />
-            </React.Fragment>
-        );
-    };
-};
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <React.Fragment>
+                    <View>
+                        <Video 
+                            source={{uri : captures[0].uri }} 
+                            rate={1.0}
+                            volume={1.0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            shouldPlay
+                            isLooping
+                            style={{ width: Dimensions.get("window").width, height: Dimensions.get("window").height }} 
+                        />
+                    </View>
+                </React.Fragment>
+            );
+        }
+    }
+}
