@@ -53,5 +53,26 @@ export default StyleSheet.create({
     galleryImage: { 
         width: 75, 
         height: 75 
+    },
+    cover: {
+        width: Dimensions.get("window").width, 
+        height: Dimensions.get("window").height
+    },
+    close: {
+        margin: 5,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        marginTop: 25,
+        color: "#eeebd9" 
+    },
+    close2: {
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        marginTop: 25
+    },
+    save: {
+        marginBottom: 75,
+        color: "#eeebd9"
     }
 });

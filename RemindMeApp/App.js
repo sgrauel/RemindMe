@@ -54,7 +54,7 @@ function App() {
             ),
           })}
         />
-        <Stack.Screen name="Camera Page" component={CameraPage} />
+        <Stack.Screen options={{headerShown: false}} name="Camera Page" component={CameraPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

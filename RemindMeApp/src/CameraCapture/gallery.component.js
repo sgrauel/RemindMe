@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import { View, Image, ScrollView } from 'react-native';
 
@@ -15,3 +16,4 @@ export default ({captures=[]}) => (
         ))}
     </ScrollView>
 );
+*/

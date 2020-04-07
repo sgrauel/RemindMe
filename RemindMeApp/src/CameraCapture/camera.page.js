@@ -1,8 +1,10 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
-import { View, Text, Dimensions } from 'react-native';
 import { Video } from "expo-av";
+import { View, Text, TextInput, ScrollView, Button } from 'react-native';
 import * as Permissions from 'expo-permissions';
+import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 import styles from './styles';
 import Toolbar from './toolbar.component';
@@ -13,11 +15,14 @@ export default class CameraPage extends React.Component {
 
     state = {
         captures: [],
+        title: '',
+        text: '',
         capturing: null,
         hasCameraPermission: null,
         cameraType: Camera.Constants.Type.back,
         flashMode: Camera.Constants.FlashMode.off,
-        replayMode: false
+        replayMode: false,
+        uploadMode: false
     };
 
     setFlashMode = (flashMode) => this.setState({ flashMode });
@@ -48,7 +53,7 @@ export default class CameraPage extends React.Component {
     };
 
     render() {
-        const { hasCameraPermission, flashMode, cameraType, capturing, captures, replayMode  } = this.state;
+        const { hasCameraPermission, flashMode, cameraType, capturing, captures, replayMode, uploadMode, text, title  } = this.state;
 
         if (hasCameraPermission === null) {
             return <View />;
@@ -56,6 +61,42 @@ export default class CameraPage extends React.Component {
             return <Text>Access to camera has been denied.</Text>;
         }
 
+        if (uploadMode) {
+            return (
+                <React.Fragment>
+                    <MaterialCommunityIcons onPress={() => this.setState({replayMode: true, uploadMode: false})} name="close-circle" size={32} style={styles.close2} />
+                    <View style={{ padding: 10, marginBottom: 200, marginTop: 40 }}>
+                        <Text>Video Title:</Text> 
+                        <TextInput
+                            style={{ height: 40, backgroundColor: 'skyblue' }}
+                            onChangeText={ttl => this.setState({ title: ttl })}
+                            value={title}
+                        />
+                        <Text>Memorandum:</Text> 
+                        <TextInput
+                            multiline={true}
+                            numberOfLines={100}
+                            style={{ height: 80, backgroundColor: 'skyblue' }}
+                            onChangeText={txt => this.setState({ text: txt })}
+                            value={text}
+                        />
+                        <ScrollView>
+                            <Text style={{ padding: 10, fontSize: 45 }}>
+                                {title}
+                            </Text>
+                            <Text style={{ padding: 10, fontSize: 25 }}>
+                                {text}
+                            </Text>
+                        </ScrollView>
+                        <Button onPress={() => alert('Memo created!')} title="Create Memo" color="#0000ff" />
+                    </View>
+                </React.Fragment>
+            );
+        }
+
+        // Image Gallery
+        // Put this in between View and Toolbar
+        // {captures.length > 0 && <Gallery captures={captures}/>}
         if (!replayMode) {
             return (
                 <React.Fragment>
@@ -67,9 +108,6 @@ export default class CameraPage extends React.Component {
                             ref={camera => this.camera = camera}
                         />
                     </View>
-
-                    {captures.length > 0 && <Gallery captures={captures}/>}
-
                     <Toolbar 
                         capturing={capturing}
                         flashMode={flashMode}
@@ -95,9 +133,18 @@ export default class CameraPage extends React.Component {
                             resizeMode="cover"
                             shouldPlay
                             isLooping
-                            style={{ width: Dimensions.get("window").width, height: Dimensions.get("window").height }} 
+                            style={styles.cover} 
                         />
+                        <MaterialCommunityIcons onPress={() => this.setState({replayMode: false})} name="close-circle" size={32} style={styles.close} />
                     </View>
+                    <Grid>
+                        <Row>
+                            <Col size={3}></Col>
+                            <Col style={styles.alignCenter}>
+                                <Entypo onPress={() => this.setState({uploadMode: true, replayMode: false})} name="upload" size={32} style={styles.save} />
+                            </Col>
+                        </Row>
+                    </Grid>
                 </React.Fragment>
             );
         }
