@@ -1,9 +1,10 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
 import { Video } from "expo-av";
-import { View, Text, TextInput, ScrollView, Button } from 'react-native';
+import { View, Text, TextInput, ScrollView, Button, Platform } from 'react-native';
+import { Button as Button_, ThemeProvider, DefaultTheme } from 'react-native-ios-kit';
 import * as Permissions from 'expo-permissions';
-import { MaterialCommunityIcons, Entypo, Feather, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { Col, Row, Grid } from "react-native-easy-grid";
 
 import styles from './styles';
@@ -23,6 +24,12 @@ export default class CameraPage extends React.Component {
         flashMode: Camera.Constants.FlashMode.off,
         replayMode: false,
         uploadMode: false
+    };
+
+    theme = {
+        ...DefaultTheme,
+        primaryColor: "#0000ff",
+
     };
 
     setFlashMode = (flashMode) => this.setState({ flashMode });
@@ -63,34 +70,40 @@ export default class CameraPage extends React.Component {
 
         if (uploadMode) {
             return (
-                <React.Fragment>
-                    <MaterialCommunityIcons onPress={() => this.setState({replayMode: true, uploadMode: false})} name="close-circle" size={32} style={styles.close2} />
-                    <View style={{ padding: 10, marginBottom: 200, marginTop: 40 }}>
-                        <Text>Video Title:</Text> 
-                        <TextInput
-                            style={{ height: 40, backgroundColor: 'skyblue' }}
-                            onChangeText={ttl => this.setState({ title: ttl })}
-                            value={title}
-                        />
-                        <Text>Memorandum:</Text> 
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={100}
-                            style={{ height: 80, backgroundColor: 'skyblue' }}
-                            onChangeText={txt => this.setState({ text: txt })}
-                            value={text}
-                        />
-                        <ScrollView>
-                            <Text style={{ padding: 10, fontSize: 45 }}>
-                                {title}
-                            </Text>
-                            <Text style={{ padding: 10, fontSize: 25 }}>
-                                {text}
-                            </Text>
-                        </ScrollView>
-                        <Button onPress={() => alert('Memo created!')} title="Create Memo" color="#0000ff" />
-                    </View>
-                </React.Fragment>
+                <ThemeProvider>
+                    <React.Fragment>
+                        <MaterialCommunityIcons onPress={() => this.setState({replayMode: true, uploadMode: false})} name="close-circle" size={32} style={styles.close2} />
+                        <View style={{ padding: 10, marginBottom: 200, marginTop: 40 }}>
+                            <Text>Video Title:</Text> 
+                            <TextInput
+                                style={{ height: 40, backgroundColor: 'white' }}
+                                onChangeText={ttl => this.setState({ title: ttl })}
+                                value={title}
+                            />
+                            <Text>Memorandum:</Text> 
+                            <TextInput
+                                multiline={true}
+                                numberOfLines={100}
+                                style={{ height: 80, backgroundColor: 'white' }}
+                                onChangeText={txt => this.setState({ text: txt })}
+                                value={text}
+                            />
+                            <ScrollView>
+                                <Text style={{ padding: 10, fontSize: 45 }}>
+                                    {title}
+                                </Text>
+                                <Text style={{ padding: 10, fontSize: 25 }}>
+                                    {text}
+                                </Text>
+                            </ScrollView>
+                            {Platform.OS == 'ios' ? 
+                                <Button_ onPress={() => alert('Memo created!')} 
+                                         title="Create Memo" color="white" rounded inverted> CREATE MEMO </Button_> :
+                                <Button onPress={() => alert('Memo created!')} title="Create Memo" color="#0000ff" />}
+                        </View>
+                    </React.Fragment>
+                </ThemeProvider>
+                    
             );
         }
 
