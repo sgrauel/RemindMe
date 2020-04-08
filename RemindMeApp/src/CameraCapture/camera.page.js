@@ -3,7 +3,7 @@ import { Camera } from 'expo-camera';
 import { Video } from "expo-av";
 import { View, Text, TextInput, ScrollView, Button } from 'react-native';
 import * as Permissions from 'expo-permissions';
-import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Entypo, Feather, Ionicons } from '@expo/vector-icons';
 import { Col, Row, Grid } from "react-native-easy-grid";
 
 import styles from './styles';
@@ -137,11 +137,13 @@ export default class CameraPage extends React.Component {
                         />
                         <MaterialCommunityIcons onPress={() => this.setState({replayMode: false})} name="close-circle" size={32} style={styles.close} />
                     </View>
-                    <Grid>
+                    <Grid style={styles.bottomToolbar}>
                         <Row>
-                            <Col size={3}></Col>
+                            <Col style={styles.alignCenter}> 
+                            </Col>
+                            <Col size={2}></Col>
                             <Col style={styles.alignCenter}>
-                                <Entypo onPress={() => this.setState({uploadMode: true, replayMode: false})} name="upload" size={32} style={styles.save} />
+                                <Entypo onPress={() => this.setState({uploadMode: true, replayMode: false})} name="upload" size={32} color="white" />
                             </Col>
                         </Row>
                     </Grid>

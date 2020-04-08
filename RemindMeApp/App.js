@@ -46,11 +46,7 @@ function App() {
               </View>
             ),
             headerRight: () => (
-              <Button
-                onPress={() => alert('This is a button!')}
-                title="Social Practice Docs"
-                color="#00cc00"
-              />
+             <Entypo onPress={() => alert('Social practice docs')} name="documents" size={32} color="black" style={{marginRight: 10}} />
             ),
           })}
         />
