@@ -1,8 +1,8 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
 import { Video } from "expo-av";
-import { View, Text, TextInput, ScrollView, Button, Platform } from 'react-native';
-import { Button as Button_, ThemeProvider, DefaultTheme } from 'react-native-ios-kit';
+import { View, Text, TextInput, ScrollView, Button, Platform, TouchableOpacity } from 'react-native';
+import { Button as Button_, ThemeProvider, DefaultTheme, Icon } from 'react-native-ios-kit';
 import * as Permissions from 'expo-permissions';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -24,12 +24,6 @@ export default class CameraPage extends React.Component {
         flashMode: Camera.Constants.FlashMode.off,
         replayMode: false,
         uploadMode: false
-    };
-
-    theme = {
-        ...DefaultTheme,
-        primaryColor: "#0000ff",
-
     };
 
     setFlashMode = (flashMode) => this.setState({ flashMode });
@@ -68,11 +62,20 @@ export default class CameraPage extends React.Component {
             return <Text>Access to camera has been denied.</Text>;
         }
 
+        // add X button to memo page that goes back to the replay page
         if (uploadMode) {
             return (
                 <ThemeProvider>
                     <React.Fragment>
-                        <MaterialCommunityIcons onPress={() => this.setState({replayMode: true, uploadMode: false})} name="close-circle" size={32} style={styles.close2} />
+                        {Platform.OS == "ios" ? 
+                            <View></View>:
+                            <MaterialCommunityIcons 
+                                onPress={() => this.setState({replayMode: true, uploadMode: false})} 
+                                name="close-circle" 
+                                size={32} 
+                                style={styles.close2} 
+                            />
+                        }
                         <View style={{ padding: 10, marginBottom: 200, marginTop: 40 }}>
                             <Text>Video Title:</Text> 
                             <TextInput
