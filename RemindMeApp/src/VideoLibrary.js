@@ -1,9 +1,16 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { fetchDataAll } from '../source/actions/app';
 
-export default function VideoLibrary() {
+class VideoLibrary extends Component {
+    
+    componentDidMount() {
+      const { fetchDataAll } = this.props;
+      fetchDataAll()
+    }
 
-    const rows = [
+    rows = [
       { id: 0, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
       { id: 1, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
       { id: 2, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
@@ -12,9 +19,9 @@ export default function VideoLibrary() {
       { id: 5, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ' }
     ]
     
-    const extractKey = ({ id }) => id
+    extractKey = ({ id }) => id
     
-    const renderItem = ({ item }) => {
+    renderItem = ({ item }) => {
       return (
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Image style={{ width: 100, height: 150 }} source={require('../img/Rosler-LeFlaneur319x253.jpg')} />
@@ -25,19 +32,24 @@ export default function VideoLibrary() {
       )
     }
   
-  
-    return (
-      <FlatList
-          style={styles.container}
-          data={rows}
-          renderItem={renderItem}
-          keyExtractor={extractKey}
-        />
+    render() {
+      const { data } = this.props;
+      if (data) {
+        console.log(data);
+      }
+      return (
+        <FlatList
+            style={styles.container}
+            data={this.rows}
+            renderItem={this.renderItem}
+            keyExtractor={this.extractKey}
+          />
+      );
+    }
       /*
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       </View>
       */
-    );
   }
 
   const styles = StyleSheet.create({
@@ -51,3 +63,15 @@ export default function VideoLibrary() {
       backgroundColor: 'skyblue',
     },
   });
+
+  const mapStateToProps = state => {
+    return {
+      data: state.app.data
+    }
+  }
+  
+  const mapDispatchToProps = {
+    fetchDataAll
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(VideoLibrary);

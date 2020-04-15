@@ -6,6 +6,8 @@ import { Entypo } from '@expo/vector-icons';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import VideoLibrary from './src/VideoLibrary';
 import CameraPage  from './src/CameraCapture/camera.page'
+import { Provider } from 'react-redux';
+import Store from './source/reduxStore';
 
 const Stack = createStackNavigator();
 
@@ -30,29 +32,31 @@ function CameraPage() {
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="    RemindMe"
-          component={VideoLibrary}
-          options={({navigation}) => ({
-            /* headerTitle: props => <LogoTitle {...props} />, */
-            headerLeft: () => (
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text>  </Text>
-                <Entypo onPress={() => navigation.navigate('Camera Page')} name="camera" size={32} color="black" />
-                <Text>  </Text>
-                <Entypo onPress={() => alert('Upload Video/Photo')} name="upload" size={32} color="black" />
-              </View>
-            ),
-            headerRight: () => (
-             <Entypo onPress={() => alert('Social practice docs')} name="documents" size={32} color="black" style={{marginRight: 10}} />
-            ),
-          })}
-        />
-        <Stack.Screen options={{headerShown: false}} name="Camera Page" component={CameraPage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={Store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="    RemindMe"
+            component={VideoLibrary}
+            options={({navigation}) => ({
+              /* headerTitle: props => <LogoTitle {...props} />, */
+              headerLeft: () => (
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Text>  </Text>
+                  <Entypo onPress={() => navigation.navigate('Camera Page')} name="camera" size={32} color="black" />
+                  <Text>  </Text>
+                  <Entypo onPress={() => alert('Upload Video/Photo')} name="upload" size={32} color="black" />
+                </View>
+              ),
+              headerRight: () => (
+              <Entypo onPress={() => alert('Social practice docs')} name="documents" size={32} color="black" style={{marginRight: 10}} />
+              ),
+            })}
+          />
+          <Stack.Screen options={{headerShown: false}} name="Camera Page" component={CameraPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
