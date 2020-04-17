@@ -9,11 +9,13 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { getCreateMemo } from '../../source/actions/app';
 // import Store from '../../source/reduxStore';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 
 import styles from './styles';
 import Toolbar from './toolbar.component';
 import Gallery from './gallery.component';
+
 
 class CameraPage extends React.Component {
     camera = null;
@@ -60,6 +62,8 @@ class CameraPage extends React.Component {
             text
           });
         getCreateMemo(video_);
+        const { navigation } = this.props;
+        navigation.navigate('    RemindMe');
     };
 
     async componentDidMount() {
@@ -185,6 +189,11 @@ class CameraPage extends React.Component {
             );
         }
     }
+}
+
+() => {
+    const navigation = useNavigation();
+    return <CameraPage navigation={navigation} />;
 }
 
 const mapStateToProps = state => {
