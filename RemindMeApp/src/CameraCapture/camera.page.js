@@ -60,7 +60,6 @@ class CameraPage extends React.Component {
             text
           });
         getCreateMemo(video_);
-        this.props.navigation.navigate("    RemindMe");
     };
 
     async componentDidMount() {
