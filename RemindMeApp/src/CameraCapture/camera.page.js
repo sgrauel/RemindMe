@@ -6,12 +6,16 @@ import { Button as Button_, ThemeProvider, DefaultTheme, Icon } from 'react-nati
 import * as Permissions from 'expo-permissions';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import { getCreateMemo } from '../../source/actions/app';
+// import Store from '../../source/reduxStore';
+import { connect } from 'react-redux';
+
 
 import styles from './styles';
 import Toolbar from './toolbar.component';
 import Gallery from './gallery.component';
 
-export default class CameraPage extends React.Component {
+class CameraPage extends React.Component {
     camera = null;
 
     state = {
@@ -45,6 +49,20 @@ export default class CameraPage extends React.Component {
         this.setState({ capturing: false, captures: [videoData, ...this.state.captures], replayMode: true });
     };
 
+    /*
+        - take the head of captures and include it in a call to an action creator
+        - navigate to video library with the 'navigate' object
+    */
+    createMemo = (captures_, title, text) => {
+        const { getCreateMemo } = this.props;
+        const video_ = Object.assign({},captures_[0],{
+            title,
+            text
+          });
+        getCreateMemo(video_);
+        this.props.navigation.navigate("    RemindMe");
+    };
+
     async componentDidMount() {
         const camera = await Permissions.askAsync(Permissions.CAMERA);
         const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
@@ -52,6 +70,7 @@ export default class CameraPage extends React.Component {
 
         this.setState({ hasCameraPermission });
     };
+    
 
     render() {
         const { hasCameraPermission, flashMode, cameraType, capturing, captures, replayMode, uploadMode, text, title  } = this.state;
@@ -102,7 +121,7 @@ export default class CameraPage extends React.Component {
                             {Platform.OS == 'ios' ? 
                                 <Button_ onPress={() => alert('Memo created!')} 
                                          title="Create Memo" color="white" rounded inverted> CREATE MEMO </Button_> :
-                                <Button onPress={() => alert('Memo created!')} title="Create Memo" color="#0000ff" />}
+                                <Button onPress={() => this.createMemo(captures,title,text)} title="Create Memo" color="#0000ff" />}
                         </View>
                     </React.Fragment>
                 </ThemeProvider>
@@ -168,3 +187,15 @@ export default class CameraPage extends React.Component {
         }
     }
 }
+
+const mapStateToProps = state => {
+    return {
+      data: state.app.data
+    }
+  }
+  
+  const mapDispatchToProps = {
+    getCreateMemo
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(CameraPage);
