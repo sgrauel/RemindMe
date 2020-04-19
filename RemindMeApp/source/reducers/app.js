@@ -1,4 +1,4 @@
-import { FETCH_ALL_DATA, CREATE_MEMO } from '../constants/app';
+import { /*FETCH_ALL_DATA,*/ CREATE_MEMO } from '../constants/app';
 
 const initialState = {
   data: []
@@ -16,10 +16,12 @@ const video_library = (state = [], action) => {
 
 export const app = (state = initialState, action) => {
   switch (action.type) {
+    /*
     case FETCH_ALL_DATA:
       return {
         data: action.data
       };
+    */
     case CREATE_MEMO:
       return {
           data : video_library(state.data, action)

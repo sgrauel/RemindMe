@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
 import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchDataAll } from '../source/actions/app';
+// import { fetchDataAll } from '../source/actions/app';
 
 class VideoLibrary extends Component {
     
+    /*
     componentDidMount() {
       const { fetchDataAll } = this.props;
       fetchDataAll()
     }
+    */
 
+    /*
     rows = [
       { id: 0, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
       { id: 1, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
@@ -20,13 +23,15 @@ class VideoLibrary extends Component {
     ]
     
     extractKey = ({ id }) => id
+    */
     
     renderItem = ({ item }) => {
+      const view_str = item.text.slice(0,230);
       return (
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Image style={{ width: 100, height: 150 }} source={require('../img/Rosler-LeFlaneur319x253.jpg')} />
+          <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} />
           <Text style={styles.row}>
-                  {item.text}
+                  {view_str}
           </Text>
         </View>
       )
@@ -40,9 +45,9 @@ class VideoLibrary extends Component {
       return (
         <FlatList
             style={styles.container}
-            data={this.rows}
+            data={data}
             renderItem={this.renderItem}
-            keyExtractor={this.extractKey}
+            /* keyExtractor={this.extractKey} */
           />
       );
     }
@@ -71,7 +76,7 @@ class VideoLibrary extends Component {
   }
   
   const mapDispatchToProps = {
-    fetchDataAll
+    /*fetchDataAll*/
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(VideoLibrary);
