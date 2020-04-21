@@ -7,7 +7,7 @@ const initialState = {
 const video_library = (state = [], action) => {
   switch (action.type) {
     case CREATE_MEMO:
-      return [action.video, ...state];
+      return [action.memo, ...state];
     default:
       return state;
   }

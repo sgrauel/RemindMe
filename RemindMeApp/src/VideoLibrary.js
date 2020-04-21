@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
+import { Video } from "expo-av";
+import { View, Text, FlatList, Image, StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
+import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 // import { fetchDataAll } from '../source/actions/app';
 
 class VideoLibrary extends Component {
@@ -26,17 +28,34 @@ class VideoLibrary extends Component {
     */
     
     renderItem = ({ item }) => {
-      const view_str = item.text.slice(0,230);
+      let view_str = '';
+      if (Platform.OS == 'ios') {
+        view_str = item.text.slice(0,135);
+      } else {
+        view_str = item.text.slice(0,230);
+      }
       return (
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} />
-          <Text style={styles.row}>
-                  {view_str}
-          </Text>
-        </View>
+          <TouchableOpacity onPress={() => alert('item pressed!')}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              {Platform.OS == 'ios' ?
+                <Video
+                  style={{ height: 150, width: 100 }}
+                  source={{ uri: item.uri }}
+                  usePoster
+                  shouldPlay={false}
+                  resizeMode="cover"
+                />:
+                <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} mode="fit" />
+              }
+              
+              <Text style={styles.row}>
+                      {view_str}
+              </Text>
+            </View>
+          </TouchableOpacity>
       )
     }
-  
+    //
     render() {
       const { data } = this.props;
       if (data) {
@@ -51,10 +70,6 @@ class VideoLibrary extends Component {
           />
       );
     }
-      /*
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      </View>
-      */
   }
 
   const styles = StyleSheet.create({

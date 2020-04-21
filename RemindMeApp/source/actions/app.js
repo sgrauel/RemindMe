@@ -15,11 +15,11 @@ export const fetchDataAll = () => dispatch => {
 }
 */
 
-const createMemo = video => ({
+const createMemo = memo => ({
   type: CREATE_MEMO,
-  video
+  memo
 });
 
-export const getCreateMemo = (video) => dispatch => {
-  dispatch(createMemo(video));
+export const getCreateMemo = (memo) => dispatch => {
+  dispatch(createMemo(memo));
 }

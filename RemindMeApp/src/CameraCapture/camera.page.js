@@ -1,7 +1,7 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
 import { Video } from "expo-av";
-import { View, Text, TextInput, ScrollView, Button, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, ScrollView, Button, Platform, Image } from 'react-native';
 import { Button as Button_, ThemeProvider, DefaultTheme, Icon } from 'react-native-ios-kit';
 import * as Permissions from 'expo-permissions';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
@@ -43,7 +43,7 @@ class CameraPage extends React.Component {
 
     handleShortCapture = async () => {
         const photoData = await this.camera.takePictureAsync();
-        this.setState({ capturing: false, captures: [photoData, ...this.state.captures] });
+        this.setState({ capturing: false, captures: [photoData, ...this.state.captures], replayMode: true });
     };
 
     handleLongCapture = async () => {
@@ -57,11 +57,11 @@ class CameraPage extends React.Component {
     */
     createMemo = (captures_, title, text) => {
         const { getCreateMemo } = this.props;
-        const video_ = Object.assign({},captures_[0],{
+        const memo_ = Object.assign({},captures_[0],{
             title,
             text
           });
-        getCreateMemo(video_);
+        getCreateMemo(memo_);
         const { navigation } = this.props;
         navigation.navigate('    RemindMe');
     };
@@ -122,7 +122,7 @@ class CameraPage extends React.Component {
                                 </Text>
                             </ScrollView>
                             {Platform.OS == 'ios' ? 
-                                <Button_ onPress={() => alert('Memo created!')} 
+                                <Button_ onPress={() => this.createMemo(captures,title,text)} 
                                          title="Create Memo" color="white" rounded inverted> CREATE MEMO </Button_> :
                                 <Button onPress={() => this.createMemo(captures,title,text)} title="Create Memo" color="#0000ff" />}
                         </View>
@@ -160,9 +160,11 @@ class CameraPage extends React.Component {
                 </React.Fragment>
             );
         } else {
+            const file_ext = captures[0].uri.split('.').pop();
             return (
                 <React.Fragment>
                     <View>
+                    {file_ext == 'mp4' || file_ext == 'mov' ?
                         <Video 
                             source={{uri : captures[0].uri }} 
                             rate={1.0}
@@ -172,7 +174,13 @@ class CameraPage extends React.Component {
                             shouldPlay
                             isLooping
                             style={styles.cover} 
-                        />
+                        />:
+                        <Image
+                            source={{uri: captures[0].uri}}
+                            resizeMode="cover"
+                            style={styles.cover}
+                        />   
+                    }
                         <MaterialCommunityIcons onPress={() => this.setState({replayMode: false})} name="close-circle" size={32} style={styles.close} />
                     </View>
                     <Grid style={styles.bottomToolbar}>
@@ -190,6 +198,26 @@ class CameraPage extends React.Component {
         }
     }
 }
+
+/*
+                            {file_ext == 'mp4' ?
+                        <Video 
+                            source={{uri : captures[0].uri }} 
+                            rate={1.0}
+                            volume={1.0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            shouldPlay
+                            isLooping
+                            style={styles.cover} 
+                        />:
+                        <Image
+                            source={{uri: captures[0].uri}}
+                            resizeMode="cover"
+                            style={styles.cover}
+                        />   
+                        }
+*/
 
 () => {
     const navigation = useNavigation();
