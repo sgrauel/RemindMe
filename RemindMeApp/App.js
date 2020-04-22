@@ -5,7 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Entypo } from '@expo/vector-icons';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import VideoLibrary from './src/VideoLibrary';
-import CameraPage  from './src/CameraCapture/camera.page'
+import VideoPlayer from './src/VideoPlayer';
+import CameraPage  from './src/CameraCapture/camera.page';
 import { Provider } from 'react-redux';
 import Store from './source/reduxStore';
 
@@ -54,6 +55,7 @@ function App() {
             })}
           />
           <Stack.Screen options={{headerShown: false}} name="Camera Page" component={CameraPage} />
+          <Stack.Screen name="Video Player" component={VideoPlayer} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

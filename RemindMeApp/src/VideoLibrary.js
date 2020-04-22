@@ -35,7 +35,8 @@ class VideoLibrary extends Component {
         view_str = item.text.slice(0,230);
       }
       return (
-          <TouchableOpacity onPress={() => alert('item pressed!')}>
+          <TouchableOpacity 
+            onPress={() => this.props.navigation.navigate('Video Player', item)}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               {Platform.OS == 'ios' ?
                 <Video
