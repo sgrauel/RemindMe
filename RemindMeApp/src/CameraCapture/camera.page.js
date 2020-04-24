@@ -1,6 +1,6 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
-import { Video } from "expo-av";
+import { Video, Audio } from "expo-av";
 import { View, Text, TextInput, ScrollView, Button, Platform, Image } from 'react-native';
 import { Button as Button_, ThemeProvider, DefaultTheme, Icon } from 'react-native-ios-kit';
 import * as Permissions from 'expo-permissions';
@@ -41,12 +41,39 @@ class CameraPage extends React.Component {
             this.camera.stopRecording();
     };
 
+    /*
+    playsound = async () => {
+        try {
+           
+           const { sound: soundObject, status } = await 
+              Audio.Sound.createAsync(require('../../assets/sounds/Electronic_Chime-KevanGC-495939803.mp3'), { shouldPlay: true });
+            return await soundObject.playAsync();
+        } 
+        catch (error) { console.log(error); }
+    };
+    */
+
     handleShortCapture = async () => {
         const photoData = await this.camera.takePictureAsync();
         this.setState({ capturing: false, captures: [photoData, ...this.state.captures], replayMode: true });
     };
 
     handleLongCapture = async () => {
+        const playsound = async () => {
+            try {
+               
+               const { sound: soundObject, status } = await 
+                  Audio.Sound.createAsync(require('../../assets/sounds/Electronic_Chime-KevanGC-495939803.mp3'), { shouldPlay: true });
+                return await soundObject.playAsync();
+            } 
+            catch (error) { console.log(error); }
+        };
+
+        if (Platform.OS == 'ios') { 
+            playsound();
+            await new Promise(r => setTimeout(r, 1000)); // sleep 1 second
+        }
+        
         const videoData = await this.camera.recordAsync();
         this.setState({ capturing: false, captures: [videoData, ...this.state.captures], replayMode: true });
     };
@@ -198,33 +225,6 @@ class CameraPage extends React.Component {
         }
     }
 }
-
-/*
-                            {file_ext == 'mp4' ?
-                        <Video 
-                            source={{uri : captures[0].uri }} 
-                            rate={1.0}
-                            volume={1.0}
-                            isMuted={false}
-                            resizeMode="cover"
-                            shouldPlay
-                            isLooping
-                            style={styles.cover} 
-                        />:
-                        <Image
-                            source={{uri: captures[0].uri}}
-                            resizeMode="cover"
-                            style={styles.cover}
-                        />   
-                        }
-*/
-
-/*
-() => {
-    const navigation = useNavigation();
-    return <CameraPage navigation={navigation} />;
-}
-*/
 
 const mapStateToProps = state => {
     return {
