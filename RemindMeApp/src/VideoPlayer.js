@@ -38,6 +38,8 @@ import { Asset } from "expo-asset";
 import { Audio, Video } from "expo-av";
 import * as Font from "expo-font";
 import { Button as Button_, ThemeProvider } from 'react-native-ios-kit';
+// import Store from '../source/reduxStore';
+import { connect } from 'react-redux';
 
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -58,6 +60,23 @@ class PlaylistItem {
   }
 }
 
+/*
+console.log("data: ");
+console.log(Store.getState().app.data);
+const PLAYLIST = Store
+  .getState()
+  .app
+  .data
+  .filter(item => {
+    const ext = item.uri.split('.').pop();
+    if (ext == 'mov' || ext == 'mp4') return true;
+    else return false;
+  })
+  .map(item => new PlaylistItem(item.title,item.uri,true));
+*/
+
+let PLAYLIST = [];
+/*
 const PLAYLIST = [
   new PlaylistItem(
     "Comfort Fit - “Sorry”",
@@ -85,6 +104,7 @@ const PLAYLIST = [
     false
   )
 ];
+*/
 
 const ICON_THROUGH_EARPIECE = "speaker-phone";
 const ICON_THROUGH_SPEAKER = "speaker";
@@ -186,6 +206,14 @@ class VideoPlayer extends React.Component {
   }
 
   componentDidMount() {
+    console.log('PLAYLIST: ');
+    PLAYLIST = this.props.data.filter(item => {
+      const ext = item.uri.split('.').pop();
+      if (ext == 'mov' || ext == 'mp4') return true;
+      else return false;
+    }).map(item => new PlaylistItem(item.title,item.uri,true));
+    console.log(PLAYLIST);
+
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       staysActiveInBackground: false,
@@ -720,7 +748,17 @@ class VideoPlayer extends React.Component {
   }
 }
 
-export default VideoPlayer;
+const mapStateToProps = state => {
+  return {
+    data: state.app.data
+  }
+}
+
+const mapDispatchToProps = {
+  /*fetchDataAll*/
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);
 
 const styles = StyleSheet.create({
   emptyContainer: {
