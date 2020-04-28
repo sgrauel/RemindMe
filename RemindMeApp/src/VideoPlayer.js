@@ -40,6 +40,8 @@ import * as Font from "expo-font";
 import { Button as Button_, ThemeProvider } from 'react-native-ios-kit';
 // import Store from '../source/reduxStore';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+// import { useRoute } from '@react-navigation/native';
 
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -206,13 +208,16 @@ class VideoPlayer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('PLAYLIST: ');
     PLAYLIST = this.props.data.filter(item => {
       const ext = item.uri.split('.').pop();
       if (ext == 'mov' || ext == 'mp4') return true;
       else return false;
     }).map(item => new PlaylistItem(item.title,item.uri,true));
-    console.log(PLAYLIST);
+
+    const { title } = this.props.route.params;
+    const first_few = _.takeWhile(PLAYLIST, (item) => title !== item.name); 
+    const last_few = _.dropWhile(PLAYLIST,(item) => title !== item.name);
+    PLAYLIST = [...last_few,...first_few];
 
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
