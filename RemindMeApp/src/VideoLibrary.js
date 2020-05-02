@@ -34,9 +34,12 @@ class VideoLibrary extends Component {
       } else {
         view_str = item.text.slice(0,230);
       }
+
+      const ext = item.uri.split('.').pop();
       return (
           <TouchableOpacity 
-            onPress={() => this.props.navigation.navigate('Video Player', item)}>
+            onPress={() => ext == 'jpg' ? this.props.navigation.navigate('Picture Gallery', item) :
+              this.props.navigation.navigate('Video Player', item)}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               {Platform.OS == 'ios' ?
                 <Video

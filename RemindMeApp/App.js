@@ -7,6 +7,7 @@ import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture
 import VideoLibrary from './src/VideoLibrary';
 import VideoPlayer from './src/VideoPlayer';
 import CameraPage  from './src/CameraCapture/camera.page';
+import PictureGallery from './src/PictureGallery';
 import { Provider } from 'react-redux';
 import Store from './source/reduxStore';
 
@@ -56,6 +57,7 @@ function App() {
           />
           <Stack.Screen options={{headerShown: false}} name="Camera Page" component={CameraPage} />
           <Stack.Screen name="Video Player" component={VideoPlayer} />
+          <Stack.Screen name="Picture Gallery" component={PictureGallery} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
