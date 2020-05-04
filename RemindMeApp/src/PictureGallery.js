@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Image, Dimensions, StyleSheet, ScrollView } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 
 function PictureGallery(props) {
@@ -26,7 +26,9 @@ function PictureGallery(props) {
                 <Col></Col>
             </Row>
             <Row size={35}>
-                <Text style={styles.paragraph}>{text}</Text>
+                <ScrollView>
+                    <Text style={styles.paragraph}>{text}</Text>
+                </ScrollView>
             </Row>
         </Grid>
     );
