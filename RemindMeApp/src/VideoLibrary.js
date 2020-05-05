@@ -38,8 +38,12 @@ class VideoLibrary extends Component {
       const ext = item.uri.split('.').pop();
       return (
           <TouchableOpacity 
-            onPress={() => ext == 'jpg' ? this.props.navigation.navigate('Picture Gallery', item) :
-              this.props.navigation.navigate('Video Player', item)}>
+            onPress={() => { 
+              ext == 'jpg' ? this.props.navigation.navigate('Picture Gallery', item) :
+              this.props.navigation.navigate('Video Player', item);
+              console.log("call this.selectItem(item)");
+              }
+            }>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               {Platform.OS == 'ios' ?
                 <Video
@@ -59,14 +63,14 @@ class VideoLibrary extends Component {
           </TouchableOpacity>
       )
     }
-    //
+
     render() {
       const { data } = this.props;
       if (data) {
         console.log(data);
       }
       return (
-        <FlatList
+          <FlatList
             style={styles.container}
             data={data}
             renderItem={this.renderItem}

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import React from 'react';
+import { View, Text, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Entypo } from '@expo/vector-icons';
@@ -33,6 +33,28 @@ function CameraPage() {
 */
 
 function App() {
+  const createThreeButtonAlert = () => {
+    Alert.alert(
+      "Create Collection",
+      "",
+      [
+        { text: "Cancel", 
+          onPress: () => console.log("Cancel pressed"), 
+          style: "cancel" 
+        },
+        {
+          text: "From my videos or photos",
+          onPress: () => console.log("My videos or photos")
+        },
+        {
+          text: "From my library of memos",
+          onPress: () => console.log("Library of memos")
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <Provider store={Store}>
       <NavigationContainer>
@@ -47,7 +69,7 @@ function App() {
                   <Text>  </Text>
                   <Entypo onPress={() => navigation.navigate('Camera Page')} name="camera" size={32} color="black" />
                   <Text>  </Text>
-                  <Entypo onPress={() => alert('Upload Video/Photo')} name="upload" size={32} color="black" />
+                  <Entypo onPress={createThreeButtonAlert} name="upload" size={32} color="black" />
                 </View>
               ),
               headerRight: () => (

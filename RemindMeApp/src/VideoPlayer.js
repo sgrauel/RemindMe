@@ -32,7 +32,8 @@ import {
   Text,
   TouchableHighlight,
   View,
-  Button
+  Button,
+  ScrollView
 } from "react-native";
 import { Asset } from "expo-asset";
 import { Audio, Video } from "expo-av";
