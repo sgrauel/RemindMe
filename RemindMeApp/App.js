@@ -33,6 +33,19 @@ function CameraPage() {
 */
 
 function App() {
+
+  const MyTheme = {
+    dark: false,
+    colors: {
+      primary: 'rgb(255, 45, 85)',
+      background: '#FFFAFA',
+      card: 'rgb(255, 255, 255)',
+      text: 'rgb(28, 28, 30)',
+      border: 'rgb(199, 199, 204)',
+    },
+  };
+
+
   const createThreeButtonAlert = () => {
     Alert.alert(
       "Create Collection",
@@ -57,7 +70,7 @@ function App() {
 
   return (
     <Provider store={Store}>
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <Stack.Navigator>
           <Stack.Screen
             name="    RemindMe"

@@ -37,14 +37,14 @@ class VideoLibrary extends Component {
 
       const ext = item.uri.split('.').pop();
       return (
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => { 
               ext == 'jpg' ? this.props.navigation.navigate('Picture Gallery', item) :
               this.props.navigation.navigate('Video Player', item);
               console.log("call this.selectItem(item)");
               }
             }>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5, margin: 10}} >
               {Platform.OS == 'ios' ?
                 <Video
                   style={{ height: 150, width: 100 }}
@@ -56,13 +56,15 @@ class VideoLibrary extends Component {
                 <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} mode="fit" />
               }
               
-              <Text style={styles.row}>
+              <Text style={styles.row} >
                       {view_str}
               </Text>
             </View>
           </TouchableOpacity>
       )
     }
+
+    FlatListItemSeparator = () => <View style={styles.line} />;
 
     render() {
       const { data } = this.props;
@@ -74,6 +76,7 @@ class VideoLibrary extends Component {
             style={styles.container}
             data={data}
             renderItem={this.renderItem}
+            ItemSeparatorComponent={this.FlatListItemSeparator}
             /* keyExtractor={this.extractKey} */
           />
       );
@@ -86,10 +89,13 @@ class VideoLibrary extends Component {
     },
     row: {
       padding: 20,
-      marginBottom: 5,
-      marginRight: 80,
-      backgroundColor: 'skyblue',
+      marginRight: 80
     },
+    line: {
+      height: 2,
+      width: "100%",
+      backgroundColor:"black"
+    }
   });
 
   const mapStateToProps = state => {

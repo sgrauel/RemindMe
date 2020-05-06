@@ -3,6 +3,7 @@ import { Camera } from 'expo-camera';
 import { Video, Audio } from "expo-av";
 import { View, Text, TextInput, ScrollView, Button, Platform, Image } from 'react-native';
 import { Button as Button_, ThemeProvider, DefaultTheme, Icon } from 'react-native-ios-kit';
+import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Permissions from 'expo-permissions';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -118,7 +119,7 @@ class CameraPage extends React.Component {
                     <React.Fragment>
                         {Platform.OS == "ios" ? 
                             <View></View>:
-                            <MaterialCommunityIcons 
+                            <MaterialCommunityIcons  
                                 onPress={() => this.setState({replayMode: true, uploadMode: false})} 
                                 name="close-circle" 
                                 size={32} 
@@ -208,7 +209,7 @@ class CameraPage extends React.Component {
                             style={styles.cover}
                         />   
                     }
-                        <MaterialCommunityIcons onPress={() => this.setState({replayMode: false})} name="close-circle" size={32} style={styles.close} />
+                    <MaterialCommunityIcons onPress={() => this.setState({replayMode: false})} name="close-circle" size={32} style={styles.close} />
                     </View>
                     <Grid style={styles.bottomToolbar}>
                         <Row>
