@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, TouchableHighlight } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Entypo } from '@expo/vector-icons';
@@ -67,13 +67,19 @@ function App() {
               headerLeft: () => (
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                   <Text>  </Text>
-                  <Entypo onPress={() => navigation.navigate('Camera Page')} name="camera" size={32} color="black" />
+                  <TouchableOpacity onPress={() => navigation.navigate('Camera Page')}>
+                    <Entypo name="camera" size={32} color="black" />
+                  </TouchableOpacity>
                   <Text>  </Text>
-                  <Entypo onPress={createThreeButtonAlert} name="upload" size={32} color="black" />
+                  <TouchableOpacity onPress={createThreeButtonAlert}>
+                    <Entypo name="upload" size={32} color="black" />
+                  </TouchableOpacity>
                 </View>
               ),
               headerRight: () => (
-              <Entypo onPress={() => alert('Social practice docs')} name="documents" size={32} color="black" style={{marginRight: 10}} />
+              <TouchableOpacity onPress={() => alert('Social practice docs')}>
+                <Entypo name="documents" size={32} color="black" style={{marginRight: 10}} />
+              </TouchableOpacity>
               ),
             })}
           />
