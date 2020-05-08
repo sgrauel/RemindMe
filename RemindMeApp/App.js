@@ -46,7 +46,7 @@ function App() {
   };
 
 
-  const createThreeButtonAlert = () => {
+  const createThreeButtonAlert = (navigation) => {
     Alert.alert(
       "Create Collection",
       "",
@@ -61,7 +61,12 @@ function App() {
         },
         {
           text: "From my library of memos",
-          onPress: () => console.log("Library of memos")
+          onPress: () => { 
+            console.log("Library of memos");
+            navigation.navigate("    RemindMe", {
+              isSelecting : true
+            });
+          }
         }
       ],
       { cancelable: false }
@@ -84,7 +89,7 @@ function App() {
                     <Entypo name="camera" size={32} color="black" />
                   </TouchableOpacity>
                   <Text>  </Text>
-                  <TouchableOpacity onPress={createThreeButtonAlert}>
+                  <TouchableOpacity onPress={createThreeButtonAlert.bind(this,navigation)}>
                     <Entypo name="upload" size={32} color="black" />
                   </TouchableOpacity>
                 </View>
