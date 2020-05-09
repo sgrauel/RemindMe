@@ -133,7 +133,7 @@ class VideoLibrary extends Component {
       
       return (
         <View style={{flex: 1}}>
-        <View style={{flex: 0.95}}>
+        <View style={isSelecting ? {flex: 0.95} : {flex: 1}}>
             <FlatList
               style={styles.container}
               data={data}
@@ -143,7 +143,7 @@ class VideoLibrary extends Component {
               keyExtractor={this.extractKey}
             />
         </View>
-        <View style={{flex: 0.05}}>
+        <View style={isSelecting ? {flex: 0.05} : {flex: 0}}>
         { isSelecting ? (Platform.OS == 'ios' ? 
           <Button_ onPress={() => this.props.navigation.navigate('    RemindMe', { isSelecting: false })} 
           title="Done" color="white" rounded inverted> I'm done </Button_> :
