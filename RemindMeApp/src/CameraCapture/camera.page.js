@@ -8,9 +8,8 @@ import * as Permissions from 'expo-permissions';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { getCreateMemo } from '../../source/actions/app';
-// import Store from '../../source/reduxStore';
 import { connect } from 'react-redux';
-// import { useNavigation } from '@react-navigation/native';
+import { uid } from 'react-uid';
 
 
 import styles from './styles';
@@ -85,9 +84,15 @@ class CameraPage extends React.Component {
     */
     createMemo = (captures_, title, text) => {
         const { getCreateMemo } = this.props;
+        const id = uid(captures_);
+        const isSelected = false;
+        const selectedClass = {};
         const memo_ = Object.assign({},captures_[0],{
+            id,
             title,
-            text
+            text,
+            isSelected,
+            selectedClass
           });
         getCreateMemo(memo_);
         const { navigation } = this.props;

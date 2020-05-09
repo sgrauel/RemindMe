@@ -14,19 +14,6 @@ class VideoLibrary extends Component {
       fetchDataAll()
     }
     */
-
-    /*
-    rows = [
-      { id: 0, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
-      { id: 1, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
-      { id: 2, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
-      { id: 3, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. '},
-      { id: 4, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ' },
-      { id: 5, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ' }
-    ]
-    
-    extractKey = ({ id }) => id
-    */
     
     renderItem = ({ item }) => {
       let view_str = '';
@@ -39,13 +26,11 @@ class VideoLibrary extends Component {
       const ext = item.uri.split('.').pop();
       return (
           <TouchableOpacity
-            onPress={() => { 
+            /* style={{backgroundColor: "#87CEFA"}} */
+            onPress={() =>
               ext == 'jpg' ? this.props.navigation.navigate('Picture Gallery', item) :
-              this.props.navigation.navigate('Video Player', item);
-              console.log("call this.selectItem(item)");
-              }
-            }>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5, margin: 10}} >
+              this.props.navigation.navigate('Video Player', item)}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5, margin: 10}}>
               {Platform.OS == 'ios' ?
                 <Video
                   style={{ height: 150, width: 100 }}
@@ -66,6 +51,20 @@ class VideoLibrary extends Component {
     }
 
     renderItem2 = ({ item }) => {
+
+      const selectItem = item => {
+        item.isSelect = !item.isSelect;
+        item.selectedClass = item.isSelect ? styles.selected : {};
+      
+        const index = this.props.data.findIndex(
+          item_ => item.id === item_.id
+        );
+        
+        console.log("index: " + index);
+        console.log('item: ' + item);
+      };
+      
+
       let view_str = '';
       if (Platform.OS == 'ios') {
         view_str = item.text.slice(0,135);
@@ -76,7 +75,10 @@ class VideoLibrary extends Component {
       const ext = item.uri.split('.').pop();
       return (
           <TouchableOpacity
-            onPress={() => console.log("call this.selectItem(item)")}>
+            onPress={() => {
+                console.log("call selectItem");
+                selectItem(item);
+            }}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5, margin: 10}} >
               {Platform.OS == 'ios' ?
                 <Video
@@ -90,7 +92,7 @@ class VideoLibrary extends Component {
               }
               
               <Text style={styles.row} >
-                      {view_str}
+                    {view_str}
               </Text>
             </View>
           </TouchableOpacity>
@@ -100,6 +102,8 @@ class VideoLibrary extends Component {
 
 
     FlatListItemSeparator = () => <View style={styles.line} />;
+
+    extractKey = ({ id }) => id;
 
     /*
     ListFooter = () => {
@@ -132,7 +136,7 @@ class VideoLibrary extends Component {
               renderItem={isSelecting ? this.renderItem2 : this.renderItem}
               ItemSeparatorComponent={this.FlatListItemSeparator}
               ListFooterComponent={this.ListFooter}
-            /* keyExtractor={this.extractKey} */
+              keyExtractor={this.extractKey}
             />
             { isSelecting ? (Platform.OS == 'ios' ? 
           <Button_ onPress={() => this.props.navigation.navigate('    RemindMe', { isSelecting: false })} 
@@ -156,6 +160,9 @@ class VideoLibrary extends Component {
       height: 2,
       width: "100%",
       backgroundColor:"black"
+    },
+    selected: {
+      backgroundColor: "#00BFFF"
     }
   });
 
