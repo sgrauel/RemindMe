@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { /*FETCH_ALL_DATA,*/ CREATE_MEMO } from '../constants/app';
+import { /*FETCH_ALL_DATA,*/ CREATE_MEMO, SELECT_ITEM } from '../constants/app';
 
 /*
 const dataFetch = data => ({
@@ -22,4 +22,14 @@ const createMemo = memo => ({
 
 export const getCreateMemo = (memo) => dispatch => {
   dispatch(createMemo(memo));
+}
+
+const selectItem = (index,item) => ({ 
+  type: SELECT_ITEM,
+  index,
+  item
+});
+
+export const dispatchSelectItem = (index,item) => dispatch => {
+  dispatch(selectItem(index,item));
 }

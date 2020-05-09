@@ -4,6 +4,7 @@ import { View, Text, FlatList, Image, StyleSheet, Platform, Button, ScrollView }
 import { Button as Button_ } from 'react-native-ios-kit';
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import { dispatchSelectItem } from '../source/actions/app';
 // import { fetchDataAll } from '../source/actions/app';
 
 class VideoLibrary extends Component {
@@ -53,8 +54,8 @@ class VideoLibrary extends Component {
     renderItem2 = ({ item }) => {
 
       const selectItem = item => {
-        item.isSelect = !item.isSelect;
-        item.selectedClass = item.isSelect ? styles.selected : {};
+        item.isSelected = !item.isSelected;
+        item.selectedClass = item.isSelected ? styles.selected : {};
       
         const index = this.props.data.findIndex(
           item_ => item.id === item_.id
@@ -62,6 +63,8 @@ class VideoLibrary extends Component {
         
         console.log("index: " + index);
         console.log('item: ' + item);
+
+        this.props.dispatchSelectItem(index,item);
       };
       
 
@@ -72,9 +75,9 @@ class VideoLibrary extends Component {
         view_str = item.text.slice(0,230);
       }
 
-      const ext = item.uri.split('.').pop();
       return (
           <TouchableOpacity
+            style={item.selectedClass}
             onPress={() => {
                 console.log("call selectItem");
                 selectItem(item);
@@ -174,6 +177,7 @@ class VideoLibrary extends Component {
   
   const mapDispatchToProps = {
     /*fetchDataAll*/
+    dispatchSelectItem
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(VideoLibrary);
