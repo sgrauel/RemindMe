@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Video } from "expo-av";
-import { View, Text, FlatList, Image, StyleSheet, Platform, Button, ScrollView } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, Platform, Button, ScrollView, SafeAreaView } from 'react-native';
 import { Button as Button_ } from 'react-native-ios-kit';
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
@@ -132,8 +132,9 @@ class VideoLibrary extends Component {
       console.log('isSelecting= ' + isSelecting);
       
       return (
-        <ScrollView style={{flex: 1}}>
-          <FlatList
+        <View style={{flex: 1}}>
+        <View style={{flex: 0.95}}>
+            <FlatList
               style={styles.container}
               data={data}
               renderItem={isSelecting ? this.renderItem2 : this.renderItem}
@@ -141,12 +142,15 @@ class VideoLibrary extends Component {
               ListFooterComponent={this.ListFooter}
               keyExtractor={this.extractKey}
             />
-            { isSelecting ? (Platform.OS == 'ios' ? 
+        </View>
+        <View style={{flex: 0.05}}>
+        { isSelecting ? (Platform.OS == 'ios' ? 
           <Button_ onPress={() => this.props.navigation.navigate('    RemindMe', { isSelecting: false })} 
           title="Done" color="white" rounded inverted> I'm done </Button_> :
             <Button onPress={() => this.props.navigation.navigate('    RemindMe',{ isSelecting: false })} title="I'm Done" color="#0000ff" />) :
             <View></View>}
-        </ScrollView>
+        </View>
+      </View>
       );
     }
   }
