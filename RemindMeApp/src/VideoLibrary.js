@@ -4,7 +4,7 @@ import { View, Text, FlatList, Image, StyleSheet, Platform, Button, ScrollView, 
 import { Button as Button_ } from 'react-native-ios-kit';
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
-import { dispatchSelectItem } from '../source/actions/app';
+import { dispatchSelectItem, dispatchRemoveItems, dispatchCreateCollection } from '../source/actions/app';
 // import { fetchDataAll } from '../source/actions/app';
 
 class VideoLibrary extends Component {
@@ -117,11 +117,25 @@ class VideoLibrary extends Component {
     }
     */
 
+    EndSelecting = () => {
+      // this.props.dispatchCreateCollection();
+      this.props.dispatchRemoveItems();
+      this.props.navigation.navigate('    RemindMe',{ isSelecting: false });
+    }
+
     render() {
       const { data } = this.props;
       if (data) {
+        console.log("data: ");
         console.log(data);
       }
+
+      /*
+      if (collections) {
+        console.log("collections: ");
+        console.log(collections); 
+      }
+      */
 
       let isSelecting;
       try {
@@ -145,9 +159,9 @@ class VideoLibrary extends Component {
         </View>
         <View style={isSelecting ? {flex: 0.05} : {flex: 0}}>
         { isSelecting ? (Platform.OS == 'ios' ? 
-          <Button_ onPress={() => this.props.navigation.navigate('    RemindMe', { isSelecting: false })} 
+          <Button_ onPress={this.EndSelecting} 
           title="Done" color="white" rounded inverted> I'm done </Button_> :
-            <Button onPress={() => this.props.navigation.navigate('    RemindMe',{ isSelecting: false })} title="I'm Done" color="#0000ff" />) :
+            <Button onPress={this.EndSelecting} title="I'm Done" color="#0000ff" />) :
             <View></View>}
         </View>
       </View>
@@ -181,7 +195,9 @@ class VideoLibrary extends Component {
   
   const mapDispatchToProps = {
     /*fetchDataAll*/
-    dispatchSelectItem
+    dispatchSelectItem,
+    dispatchRemoveItems
+    /* dispatchCreateCollection */
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(VideoLibrary);

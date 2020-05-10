@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { /*FETCH_ALL_DATA,*/ CREATE_MEMO, SELECT_ITEM } from '../constants/app';
+import { /*FETCH_ALL_DATA,*/ CREATE_MEMO, 
+  SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION } from '../constants/app';
 
 /*
 const dataFetch = data => ({
@@ -33,3 +34,21 @@ const selectItem = (index,item) => ({
 export const dispatchSelectItem = (index,item) => dispatch => {
   dispatch(selectItem(index,item));
 }
+
+const removeItems = () => ({
+  type: REMOVE_ITEMS
+});
+
+export const dispatchRemoveItems = () => dispatch => {
+  dispatch(removeItems());
+}
+
+/*
+const createCollection = () => ({
+  type: CREATE_COLLECTION
+});
+
+export const dispatchCreateCollection = () => dispatch => {
+  dispatch(createCollection());
+}
+*/
