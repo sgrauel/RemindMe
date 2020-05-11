@@ -1,11 +1,10 @@
 import { /*FETCH_ALL_DATA,*/ CREATE_MEMO, 
-  SELECT_ITEM, REMOVE_ITEMS/*, CREATE_COLLECTION */} from '../constants/app';
+  SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION } from '../constants/app';
 import { CommonActions } from '@react-navigation/core';
 
 const initialState = {
-  data: []
-  /*,
-  collections: [] */
+  data: [],
+  collections: []
 }
 
 const video_library = (state = [], action) => {
@@ -43,14 +42,38 @@ export const app = (state = initialState, action) => {
       return {
         data: video_library(state.data, action)
       };
-    /*
-    case CREATE_COLLECTION:
-      const xs = state.data.filter(item => item.isSelected);
-      return {
-        collections: [[...xs], ...state.collections] 
-      };
-    */
     default:
       return state;
   }
 }
+
+const collections_library = (state = [], action) => {
+  switch (action.type) {
+    case CREATE_COLLECTION:
+      return [[...action.selections], ...state];
+    default:
+      return state;
+  }
+}
+
+export const collections = (state = initialState, action) => {
+  switch (action.type) {
+    case CREATE_COLLECTION:
+      return {
+        collections : collections_library(state.collections, action)
+      };
+    default:
+      return state;
+  }
+}
+
+/*
+
+console.log('CREATE_COLLECTION');
+      const xs = state.data.filter(item => item.isSelected);
+      console.log('xs = ' + xs);
+      console.log('state.collections = ' + state.collections);
+      return {
+        collections: [[...xs], ...state.collections] 
+      };
+*/

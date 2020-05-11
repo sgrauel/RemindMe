@@ -118,24 +118,23 @@ class VideoLibrary extends Component {
     */
 
     EndSelecting = () => {
-      // this.props.dispatchCreateCollection();
+      const xs = this.props.data.filter(item => item.isSelected);
+      this.props.dispatchCreateCollection(xs);
       this.props.dispatchRemoveItems();
       this.props.navigation.navigate('    RemindMe',{ isSelecting: false });
     }
 
     render() {
-      const { data } = this.props;
+      const { data, collections } = this.props;
       if (data) {
         console.log("data: ");
         console.log(data);
       }
 
-      /*
       if (collections) {
         console.log("collections: ");
         console.log(collections); 
       }
-      */
 
       let isSelecting;
       try {
@@ -189,15 +188,16 @@ class VideoLibrary extends Component {
 
   const mapStateToProps = state => {
     return {
-      data: state.app.data
+      data: state.app.data,
+      collections: state.collections.collections
     }
   }
   
   const mapDispatchToProps = {
     /*fetchDataAll*/
     dispatchSelectItem,
-    dispatchRemoveItems
-    /* dispatchCreateCollection */
+    dispatchRemoveItems,
+    dispatchCreateCollection
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(VideoLibrary);
