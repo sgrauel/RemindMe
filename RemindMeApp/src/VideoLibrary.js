@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Video } from "expo-av";
-import { View, Text, FlatList, Image, StyleSheet, Platform, Button, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, Platform, Button, Switch } from 'react-native';
 import { Button as Button_ } from 'react-native-ios-kit';
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
@@ -146,7 +146,17 @@ class VideoLibrary extends Component {
       
       return (
         <View style={{flex: 1}}>
-        <View style={isSelecting ? {flex: 0.95} : {flex: 1}}>
+        <View style={{ flex: 0.08, justifyContent: 'flex-start', alignItems: 'center' }}>
+           <Switch
+            style={{marginRight: 20, marginTop: 10, marginLeft: 250}}
+            value={false}
+            onValueChange={v => {
+              this.props.navigation.navigate("Collections Library");
+            }}
+          />
+          <Text style={{marginTop: 10, marginLeft: 250}}>Collections</Text>
+        </View>
+        <View style={isSelecting ? {flex: 0.87} : {flex: 1}}>
             <FlatList
               style={styles.container}
               data={data}

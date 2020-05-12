@@ -10,6 +10,7 @@ import CameraPage  from './src/CameraCapture/camera.page';
 import PictureGallery from './src/PictureGallery';
 import { Provider } from 'react-redux';
 import Store from './source/reduxStore';
+import CollectionsLibrary from './src/CollectionsLibrary';
 
 const Stack = createStackNavigator();
 
@@ -104,6 +105,7 @@ function App() {
           <Stack.Screen options={{headerShown: false}} name="Camera Page" component={CameraPage} />
           <Stack.Screen name="Video Player" component={VideoPlayer} />
           <Stack.Screen name="Picture Gallery" component={PictureGallery} />
+          <Stack.Screen name="Collections Library" component={CollectionsLibrary} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
