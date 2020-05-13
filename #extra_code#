@@ -12,3 +12,12 @@
               ItemSeparatorComponent={FlatListItemSeparator}
               /* keyExtractor={this.extractKey} */
             />
+
+{_.flatten(collections).map(item => renderItem(item))}
+
+
+{collections.map(collection => 
+                <View style={{flexDirection: 'row', margin: 20}}>
+                  {collection.map(item => renderItem(item))}
+                </View>
+            )}

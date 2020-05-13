@@ -163,7 +163,7 @@ class VideoLibrary extends Component {
           { isSelecting ? (Platform.OS == 'ios' ? 
           <ThemeProvider>
             <Button_ onPress={this.EndSelecting} 
-          title="Done" color="white" rounded inverted> I'm done </Button_>
+          title="Done" color="white" rounded inverted> I'm Done </Button_>
           </ThemeProvider> :
             <Button onPress={this.EndSelecting} title="I'm Done" color="#0000ff" />) :
             <View></View>}
