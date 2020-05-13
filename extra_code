@@ -1,19 +1,6 @@
-<TouchableHighlight
-                underlayColor={BACKGROUND_COLOR}
-                style={styles.wrapper}
-                onPress={this._onFullscreenPressed}
-              >
-                <View>
-                  <Text
-                    style={[styles.text, { fontFamily: "cutive-mono-regular", paddingLeft: 200, paddingBottom: 20 }]}
-                  >
-                    Fullscreen
-                  </Text>
-                </View>
-</TouchableHighlight>
-
-
-{Platform.OS == 'ios' ? 
-                                <Button_ onPress={() => this._onFullscreenPressed()} 
-                                         title="Create Memo" color="white" rounded inverted> Fullscreen </Button_> :
-                                <Button onPress={() => this._onFullscreenPressed()} title="Create Memo" color="#0000ff" />}
+ <FlatList
+              data={collections}
+              renderItem={renderCollection}
+              ItemSeparatorComponent={FlatListItemSeparator}
+              /* keyExtractor={this.extractKey} */
+            />

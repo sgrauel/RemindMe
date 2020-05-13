@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Video } from "expo-av";
 import { View, Text, FlatList, Image, StyleSheet, Platform, Button, Switch } from 'react-native';
-import { Button as Button_ } from 'react-native-ios-kit';
+import { Button as Button_, ThemeProvider } from 'react-native-ios-kit';
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import { dispatchSelectItem, dispatchRemoveItems, dispatchCreateCollection } from '../source/actions/app';
@@ -108,15 +108,6 @@ class VideoLibrary extends Component {
 
     extractKey = ({ id }) => id;
 
-    /*
-    ListFooter = () => {
-      return Platform.OS == 'ios' ? 
-          <Button_ onPress={() => this.props.navigation.navigate('    RemindMe', { isSelecting: false })} 
-          title="Create Memo" color="white" rounded inverted> CREATE MEMO </Button_> :
-          <Button onPress={() => this.props.navigation.navigate('    RemindMe',{ isSelecting: false })} title="Create Memo" color="#0000ff" />;
-    }
-    */
-
     EndSelecting = () => {
       const xs = this.props.data.filter(item => item.isSelected);
       this.props.dispatchCreateCollection(xs);
@@ -162,14 +153,16 @@ class VideoLibrary extends Component {
               data={data}
               renderItem={isSelecting ? this.renderItem2 : this.renderItem}
               ItemSeparatorComponent={this.FlatListItemSeparator}
-              ListFooterComponent={this.ListFooter}
               keyExtractor={this.extractKey}
             />
         </View>
         <View style={isSelecting ? {flex: 0.05} : {flex: 0}}>
-        { isSelecting ? (Platform.OS == 'ios' ? 
-          <Button_ onPress={this.EndSelecting} 
-          title="Done" color="white" rounded inverted> I'm done </Button_> :
+
+          { isSelecting ? (Platform.OS == 'ios' ? 
+          <ThemeProvider>
+            <Button_ onPress={this.EndSelecting} 
+          title="Done" color="white" rounded inverted> I'm done </Button_>
+          </ThemeProvider> :
             <Button onPress={this.EndSelecting} title="I'm Done" color="#0000ff" />) :
             <View></View>}
         </View>
