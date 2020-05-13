@@ -57,11 +57,11 @@ function App() {
           style: "cancel" 
         },
         {
-          text: "From my videos or photos",
+          text: "From My Videos or Photos",
           onPress: () => console.log("My videos or photos")
         },
         {
-          text: "From my library of memos",
+          text: "From My Library of Memos",
           onPress: () => { 
             console.log("Library of memos");
             navigation.navigate("    RemindMe", {
