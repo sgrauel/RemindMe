@@ -32,7 +32,7 @@ class VideoLibrary extends Component {
               ext == 'jpg' ? this.props.navigation.navigate('Picture Gallery', item) :
               this.props.navigation.navigate('Video Player', item)}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5, margin: 10}}>
-              {Platform.OS == 'ios' ?
+              {Platform.OS == 'ios' && ext !== 'jpg'  ?
                 <Video
                   style={{ height: 150, width: 100 }}
                   source={{ uri: item.uri }}
@@ -74,6 +74,8 @@ class VideoLibrary extends Component {
       } else {
         view_str = item.text.slice(0,230);
       }
+      
+      const ext = item.uri.split('.').pop();
 
       return (
           <TouchableOpacity
@@ -83,7 +85,7 @@ class VideoLibrary extends Component {
                 selectItem(item);
             }}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5, margin: 10}} >
-              {Platform.OS == 'ios' ?
+              {Platform.OS == 'ios' && ext !== 'jpg' ?
                 <Video
                   style={{ height: 150, width: 100 }}
                   source={{ uri: item.uri }}
@@ -91,7 +93,7 @@ class VideoLibrary extends Component {
                   shouldPlay={false}
                   resizeMode="cover"
                 />:
-                <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} mode="fit" />
+                <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} cover="fit" />
               }
               
               <Text style={styles.row} >
