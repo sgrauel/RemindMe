@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, Switch, Platform, StyleSheet, Image, Video } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { Collection, ThemeProvider } from 'react-native-ios-kit';
+import { uid } from 'react-uid';
 
 function CollectionsLibrary(props) {
 
@@ -61,26 +63,44 @@ function CollectionsLibrary(props) {
         console.log("collections[0] = " + collections[0]);
     }
 
+    const data = collections.map(xs =>
+      Object.assign({},{
+        key: uid(xs),
+        data: xs 
+      })
+    );
+
+    console.log('data: ' + data);
+
     return (
-         <View style={{flex: 1}}>
-          <View style={{ flex: 0.10, justifyContent: 'flex-start', alignItems: 'center' }}>
-            <Switch
-              style={{marginRight: 20, marginTop: 10, marginLeft: 250}}
-              value={true}
-              onValueChange={v => {
-                props.navigation.navigate("    RemindMe");
-              }}
-            />
-            <Text style={{marginTop: 10, marginLeft: 250}}>Memos</Text>
-          </View>
-          <View style={{flex: 0.90, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap'}}>
-            {collections.map(collection => 
+        <ThemeProvider>
+           <View style={{flex: 1}}>
+            <View style={{ flex: 0.15, justifyContent: 'flex-start', alignItems: 'center' }}>
+              <Switch
+                style={{marginRight: 20, marginTop: 10, marginLeft: 250}}
+                value={true}
+                onValueChange={v => {
+                  props.navigation.navigate("    RemindMe");
+                }}
+              />
+              <Text style={{marginTop: 10, marginLeft: 250}}>Memos</Text>
+            </View>
+            <View style={{flex: 0.85, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap'}}>
+              {Platform.OS == 'ios' ?
+              <Collection
+                numberOfColumns={4}
+                data={data}
+                renderItem={renderItem}
+                renderSectionFooter={FlatListItemSeparator}
+              />:
+              collections.map(collection => 
                 <View style={{flexDirection: 'row', margin: 20}}>
                   {collection.map(item => renderItem(item))}
-                </View>
-            )}
+                </View>)
+              }
+            </View>
           </View>
-        </View>
+        </ThemeProvider>
     );
 }
 
