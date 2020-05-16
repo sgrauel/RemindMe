@@ -63,7 +63,8 @@ function CollectionsLibrary(props) {
         console.log("collections[0] = " + collections[0]);
     }
 
-    const data = collections.map(xs =>
+    let data = collections.filter(xs => xs.length == 0 ? false : true);
+    data = data.map(xs =>
       Object.assign({},{
         key: uid(xs),
         data: xs 
