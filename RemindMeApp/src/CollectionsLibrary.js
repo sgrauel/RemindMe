@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Switch, Platform, StyleSheet, Image, Video, TouchableHighlight } from 'react-native';
+import { View, Text, Switch, Platform, StyleSheet, Image, Video, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Collection, ThemeProvider } from 'react-native-ios-kit';
+import { MaterialIcons } from '@expo/vector-icons';
 import { uid } from 'react-uid';
 
 function CollectionsLibrary(props) {
@@ -101,6 +102,9 @@ function CollectionsLibrary(props) {
               collections.map(collection => 
                 <View style={{flexDirection: 'row', margin: 20}}>
                   {collection.map(item => renderItem(item))}
+                  <TouchableOpacity onPress={() => alert('adding to existing collection by id')}>
+                    <MaterialIcons name="add" size={32} color="black" />
+                  </TouchableOpacity>
                 </View>)
               }
             </View>
