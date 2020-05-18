@@ -56,7 +56,8 @@ class Icon {
 }
 
 class PlaylistItem {
-  constructor(name, uri, isVideo) {
+  constructor(id, name, uri, isVideo) {
+    this.id = id;
     this.name = name;
     this.uri = uri;
     this.isVideo = isVideo;
@@ -208,17 +209,29 @@ class VideoPlayer extends React.Component {
     };
   }
 
-  componentDidMount() {
-    PLAYLIST = this.props.data.filter(item => {
+  orderVideos = (xs) => {
+    const ys = xs.filter(item => {
       const ext = item.uri.split('.').pop();
       if (ext == 'mov' || ext == 'mp4') return true;
       else return false;
-    }).map(item => new PlaylistItem(item.title,item.uri,true));
+    }).map(item => new PlaylistItem(item.id,item.title,item.uri,true));
 
-    const { title } = this.props.route.params;
-    const first_few = _.takeWhile(PLAYLIST, (item) => title !== item.name); 
-    const last_few = _.dropWhile(PLAYLIST,(item) => title !== item.name);
-    PLAYLIST = [...last_few,...first_few];
+    const { id } = this.props.route.params;
+    const first_few = _.takeWhile(ys, (item) => id !== item.id); 
+    const last_few = _.dropWhile(ys,(item) => id !== item.id);
+    return [...last_few,...first_few];
+  }
+
+  componentDidMount() {
+
+    const { prevRoute } = this.props.route.params;
+    console.log('prevRoute: ' + prevRoute);
+    
+    if (prevRoute === 'Video Library') {
+      PLAYLIST = this.orderVideos(this.props.data);
+    } else {
+      PLAYLIST = this.orderVideos(_.flatten(this.props.collections));
+    }
 
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
@@ -756,7 +769,8 @@ class VideoPlayer extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    data: state.app.data
+    data: state.app.data,
+    collections: state.collections.collections
   }
 }
 

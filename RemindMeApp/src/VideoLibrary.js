@@ -30,7 +30,7 @@ class VideoLibrary extends Component {
             /* style={{backgroundColor: "#87CEFA"}} */
             onPress={() =>
               ext == 'jpg' ? this.props.navigation.navigate('Picture Gallery', item) :
-              this.props.navigation.navigate('Video Player', item)}>
+              this.props.navigation.navigate('Video Player', Object.assign({},item,{ prevRoute: 'Video Library'}))}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5, margin: 10}}>
               {Platform.OS == 'ios' && ext !== 'jpg'  ?
                 <Video

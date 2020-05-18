@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Switch, Platform, StyleSheet, Image, Video } from 'react-native';
+import { View, Text, Switch, Platform, StyleSheet, Image, Video, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Collection, ThemeProvider } from 'react-native-ios-kit';
@@ -39,14 +39,18 @@ function CollectionsLibrary(props) {
 
    const renderItem = (item) => {
      const ext = item.uri.split('.').pop();
-     return (Platform.OS == 'ios' && ext !== 'jpg'? 
-      <Video
-        source={{ uri: item.uri }}
-        usePoster
-        shouldPlay={false}
-        resizeMode="cover"
-        />:
-      <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} cover="fit" />);
+     return (<TouchableHighlight onPress={() => ext !== 'jpg' ?
+        props.navigation.navigate('Video Player',Object.assign({},item,{ prevRoute: 'Collections Library'})) 
+      : props.navigation.navigate('Picture Gallery',item)}>
+       {Platform.OS == 'ios' && ext !== 'jpg'? 
+        <Video
+          source={{ uri: item.uri }}
+          usePoster
+          shouldPlay={false}
+          resizeMode="cover"
+          />:
+        <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} cover="fit" />}
+     </TouchableHighlight>);
     }
 
     const FlatListItemSeparator = () => <View style={styles.line} />;
