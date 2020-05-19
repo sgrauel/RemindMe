@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Collection, ThemeProvider } from 'react-native-ios-kit';
 import { MaterialIcons } from '@expo/vector-icons';
-import { uid } from 'react-uid';
+import * as VideoThumbnails from 'expo-video-thumbnails';
+// import { uid } from 'react-uid';
 
 function CollectionsLibrary(props) {
 
@@ -38,12 +39,15 @@ function CollectionsLibrary(props) {
     }
     */
 
-   const renderItem = (item) => {
+   const renderItem = item => {
+
      const ext = item.uri.split('.').pop();
-     return (<TouchableHighlight onPress={() => ext !== 'jpg' ?
-        props.navigation.navigate('Video Player',Object.assign({},item,{ prevRoute: 'Collections Library'})) 
-      : props.navigation.navigate('Picture Gallery',item)}>
-       {Platform.OS == 'ios' && ext !== 'jpg'? 
+
+     return (
+        <TouchableHighlight onPress={() => ext !== 'jpg' ?
+          props.navigation.navigate('Video Player',Object.assign({},item,{ prevRoute: 'Collections Library'})) 
+        : props.navigation.navigate('Picture Gallery',item)}>
+        {Platform.OS == 'ios' && ext !== 'jpg'? 
         <Video
           source={{ uri: item.uri }}
           usePoster
@@ -51,7 +55,8 @@ function CollectionsLibrary(props) {
           resizeMode="cover"
           />:
         <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} cover="fit" />}
-     </TouchableHighlight>);
+      </TouchableHighlight>
+     );
     }
 
     const FlatListItemSeparator = () => <View style={styles.line} />;
@@ -68,6 +73,7 @@ function CollectionsLibrary(props) {
         console.log("collections[0] = " + collections[0]);
     }
 
+    /*
     let data = collections.filter(xs => xs.length == 0 ? false : true);
     data = data.map(xs =>
       Object.assign({},{
@@ -77,6 +83,13 @@ function CollectionsLibrary(props) {
     );
 
     console.log('data: ' + data);
+    */
+
+   // filter out null list produced when collections is a singleton
+   /*
+   const data = collections.filter(xs => xs.data.length == 0 ? false : true);
+   */
+   // console.log('data: ' + data);
 
     return (
         <ThemeProvider>
@@ -92,17 +105,17 @@ function CollectionsLibrary(props) {
               <Text style={{marginTop: 10, marginLeft: 250}}>Memos</Text>
             </View>
             <View style={{flex: 0.85, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap'}}>
-              {Platform.OS == 'ios' ?
+              { Platform.OS == 'ios' ?
               <Collection
                 numberOfColumns={4}
-                data={data}
+                data={collections}
                 renderItem={renderItem}
                 renderSectionFooter={FlatListItemSeparator}
               />:
               collections.map(collection => 
                 <View style={{flexDirection: 'row', margin: 20}}>
-                  {collection.map(item => renderItem(item))}
-                  <TouchableOpacity onPress={() => alert('adding to existing collection by id')}>
+                  {collection.data.map(item => renderItem(item))}
+                  <TouchableOpacity onPress={() => alert('adding to existing collection by id: ' + collection.key)}>
                     <MaterialIcons name="add" size={32} color="black" />
                   </TouchableOpacity>
                 </View>)

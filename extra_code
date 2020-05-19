@@ -12,3 +12,32 @@
               ItemSeparatorComponent={FlatListItemSeparator}
               /* keyExtractor={this.extractKey} */
             />
+
+
+ {Platform.OS == 'ios' ?
+              <Collection
+                numberOfColumns={4}
+                data={data}
+                renderItem={renderItem}
+                renderSectionFooter={FlatListItemSeparator}
+              />:
+              data.map(collection => 
+                <View style={{flexDirection: 'row', margin: 20}}>
+                  {collection.data.map(item => renderItem(item))}
+                  <TouchableOpacity onPress={() => alert('adding to existing collection by id: ' + collection.key)}>
+                    <MaterialIcons name="add" size={32} color="black" />
+                  </TouchableOpacity>
+                </View>)
+              }
+
+
+
+{Platform.OS == 'ios' && ext !== 'jpg'? 
+        <Video
+          source={{ uri: item.uri }}
+          usePoster
+          shouldPlay={false}
+          resizeMode="cover"
+          />:
+        <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} cover="fit" />}
+

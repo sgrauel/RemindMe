@@ -5,6 +5,7 @@ import { Button as Button_, ThemeProvider } from 'react-native-ios-kit';
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import { dispatchSelectItem, dispatchRemoveItems, dispatchCreateCollection } from '../source/actions/app';
+import { uid } from 'react-uid';
 // import { fetchDataAll } from '../source/actions/app';
 
 class VideoLibrary extends Component {
@@ -112,7 +113,8 @@ class VideoLibrary extends Component {
 
     EndSelecting = () => {
       const xs = this.props.data.filter(item => item.isSelected);
-      this.props.dispatchCreateCollection(xs);
+      const key = uid(xs);
+      this.props.dispatchCreateCollection(key,xs);
       this.props.dispatchRemoveItems();
       this.props.navigation.navigate('    RemindMe',{ isSelecting: false });
     }

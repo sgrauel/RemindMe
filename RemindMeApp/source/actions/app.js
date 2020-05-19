@@ -44,11 +44,12 @@ export const dispatchRemoveItems = () => dispatch => {
 }
 
 
-const createCollection = (selections) => ({
+const createCollection = (key, selections) => ({
   type: CREATE_COLLECTION,
+  key,
   selections
 });
 
-export const dispatchCreateCollection = (selections) => dispatch => {
-  dispatch(createCollection(selections));
+export const dispatchCreateCollection = (key,selections) => dispatch => {
+  dispatch(createCollection(key, selections));
 }

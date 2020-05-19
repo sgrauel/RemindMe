@@ -50,7 +50,10 @@ export const app = (state = initialState, action) => {
 const collections_library = (state = [], action) => {
   switch (action.type) {
     case CREATE_COLLECTION:
-      return [[...action.selections], ...state];
+      return [{
+                key: action.key,
+                data: [...action.selections]
+              }, ...state];
     default:
       return state;
   }

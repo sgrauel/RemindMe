@@ -230,7 +230,8 @@ class VideoPlayer extends React.Component {
     if (prevRoute === 'Video Library') {
       PLAYLIST = this.orderVideos(this.props.data);
     } else {
-      PLAYLIST = this.orderVideos(_.flatten(this.props.collections));
+      const data = this.props.collections.map(collection => collection.data);
+      PLAYLIST = this.orderVideos(_.flatten(data));
     }
 
     Audio.setAudioModeAsync({
