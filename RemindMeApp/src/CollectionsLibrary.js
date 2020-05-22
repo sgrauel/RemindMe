@@ -47,14 +47,7 @@ function CollectionsLibrary(props) {
         <TouchableHighlight onPress={() => ext !== 'jpg' ?
           props.navigation.navigate('Video Player',Object.assign({},item,{ prevRoute: 'Collections Library'})) 
         : props.navigation.navigate('Picture Gallery',item)}>
-        {Platform.OS == 'ios' && ext !== 'jpg'? 
-        <Video
-          source={{ uri: item.uri }}
-          usePoster
-          shouldPlay={false}
-          resizeMode="cover"
-          />:
-        <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} cover="fit" />}
+        <Image style={{ width: 100, height: 150 }} source={ext === 'mov' || ext === 'mp4' ? {uri : item.videoThumbnail} :{uri : item.uri}} cover="fit" />
       </TouchableHighlight>
      );
     }

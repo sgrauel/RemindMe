@@ -10,6 +10,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { getCreateMemo } from '../../source/actions/app';
 import { connect } from 'react-redux';
 import { uid } from 'react-uid';
+import * as VideoThumbnails from 'expo-video-thumbnails';
 
 
 import styles from './styles';
@@ -82,18 +83,50 @@ class CameraPage extends React.Component {
         - take the head of captures and include it in a call to an action creator
         - navigate to video library with the 'navigate' object
     */
-    createMemo = (captures_, title, text) => {
+    createMemo = async (captures_, title, text) => {
+
+        const generateThumbnail = async (uri_) => {
+            try {
+              const { uri } = await VideoThumbnails.getThumbnailAsync(
+                uri_,
+                {
+                  time: 15000,
+                }
+              );
+              return Promise.resolve(uri);
+            } catch (e) {
+              console.warn(e);
+            }
+          };
+
+
         const { getCreateMemo } = this.props;
         const id = uid(captures_);
         const isSelected = false;
         const selectedClass = {};
-        const memo_ = Object.assign({},captures_[0],{
-            id,
-            title,
-            text,
-            isSelected,
-            selectedClass
-          });
+
+        const ext = captures_[0].uri.split('.').pop();
+        let memo_ = {};
+        if (ext === 'mov' || ext === 'mp4') {
+            const videoThumbnail = await generateThumbnail(captures_[0].uri);
+            memo_ = Object.assign({},captures_[0],{
+                id,
+                title,
+                text,
+                isSelected,
+                selectedClass,
+                videoThumbnail
+            });
+        } else {
+            memo_ = Object.assign({},captures_[0],{
+                id,
+                title,
+                text,
+                isSelected,
+                selectedClass
+            });
+        }
+
         getCreateMemo(memo_);
         const { navigation } = this.props;
         navigation.navigate('    RemindMe');
