@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { /*FETCH_ALL_DATA,*/ CREATE_MEMO, 
-  SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION } from '../constants/app';
+  SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION, ADD_TO_COLLECTION } from '../constants/app';
 
 /*
 const dataFetch = data => ({
@@ -52,4 +52,14 @@ const createCollection = (key, selections) => ({
 
 export const dispatchCreateCollection = (key,selections) => dispatch => {
   dispatch(createCollection(key, selections));
+}
+
+const addToCollection = (collectionId, selections) => ({
+  type: ADD_TO_COLLECTION,
+  collectionId,
+  selections
+});
+
+export const dispatchAddToCollection = (collectionId, selections) => dispatch => {
+  dispatch(addToCollection(collectionId,selections));
 }

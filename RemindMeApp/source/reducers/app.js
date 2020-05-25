@@ -1,5 +1,5 @@
 import { /*FETCH_ALL_DATA,*/ CREATE_MEMO, 
-  SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION } from '../constants/app';
+  SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION, ADD_TO_COLLECTION } from '../constants/app';
 import { CommonActions } from '@react-navigation/core';
 
 const initialState = {
@@ -54,6 +54,14 @@ const collections_library = (state = [], action) => {
                 key: action.key,
                 data: [...action.selections]
               }, ...state];
+     case ADD_TO_COLLECTION:
+      return state.map(collection => 
+      collection.key === action.collectionId ?
+            Object.assign({}, {...collection}, {
+              data: [...action.selections, ...collection.data]
+            }) :
+            collection
+      );
     default:
       return state;
   }
@@ -65,6 +73,10 @@ export const collections = (state = initialState, action) => {
       return {
         collections : collections_library(state.collections, action)
       };
+    case ADD_TO_COLLECTION:
+      return {
+        collections : collections_library(state.collections, action)
+      }
     default:
       return state;
   }

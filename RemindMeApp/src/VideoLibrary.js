@@ -4,7 +4,7 @@ import { View, Text, FlatList, Image, StyleSheet, Platform, Button, Switch } fro
 import { Button as Button_, ThemeProvider } from 'react-native-ios-kit';
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
-import { dispatchSelectItem, dispatchRemoveItems, dispatchCreateCollection } from '../source/actions/app';
+import { dispatchSelectItem, dispatchRemoveItems, dispatchCreateCollection, dispatchAddToCollection } from '../source/actions/app';
 import { uid } from 'react-uid';
 // import { fetchDataAll } from '../source/actions/app';
 
@@ -119,6 +119,13 @@ class VideoLibrary extends Component {
       this.props.navigation.navigate('    RemindMe',{ isSelecting: false });
     }
 
+    EndSelecting2 = (collectionId) => {
+      const ys = this.props.data.filter(item => item.isSelected);
+      this.props.dispatchAddToCollection(collectionId,ys);
+      this.props.dispatchRemoveItems();
+      this.props.navigation.navigate('    RemindMe', { isSelecting: false});
+    }
+
     render() {
       const { data, collections } = this.props;
       if (data) {
@@ -132,12 +139,18 @@ class VideoLibrary extends Component {
       }
 
       let isSelecting;
+      let prevRoute;
+      let collectionId;
       try {
         isSelecting = this.props.route.params.isSelecting;
+        prevRoute = this.props.route.params.prevRoute;
+        collectionId = this.props.route.params.collectionId;
       } catch (TypeError) {
       }
 
       console.log('isSelecting= ' + isSelecting);
+      console.log('prevRoute=' + prevRoute);
+      console.log('collectionId=' + collectionId);
       
       return (
         <View style={{flex: 1}}>
@@ -164,10 +177,10 @@ class VideoLibrary extends Component {
 
           { isSelecting ? (Platform.OS == 'ios' ? 
           <ThemeProvider>
-            <Button_ onPress={this.EndSelecting} 
+            <Button_ onPress={prevRoute === 'Collections Library' ? this.EndSelecting2.bind(this,collectionId) : this.EndSelecting} 
           title="Done" color="white" rounded inverted> I'm Done </Button_>
           </ThemeProvider> :
-            <Button onPress={this.EndSelecting} title="I'm Done" color="#0000ff" />) :
+            <Button onPress={prevRoute === 'Collections Library' ? this.EndSelecting2.bind(this,collectionId) : this.EndSelecting} title="I'm Done" color="#0000ff" />) :
             <View></View>}
         </View>
       </View>
@@ -204,7 +217,8 @@ class VideoLibrary extends Component {
     /*fetchDataAll*/
     dispatchSelectItem,
     dispatchRemoveItems,
-    dispatchCreateCollection
+    dispatchCreateCollection,
+    dispatchAddToCollection
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(VideoLibrary);

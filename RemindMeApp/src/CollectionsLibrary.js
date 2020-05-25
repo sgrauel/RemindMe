@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Switch, Platform, StyleSheet, Image, Video, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { View, Text, Switch, Platform, StyleSheet, Image, Video, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Collection, ThemeProvider } from 'react-native-ios-kit';
@@ -54,7 +54,24 @@ function CollectionsLibrary(props) {
 
     const FlatListItemSeparator = () => <View style={styles.line} />;
 
-    const extractKey = ({ id }) => id;
+    const addingToCollection = (collection) => {
+      if (props.data.length !== 0) {
+        props.navigation.navigate("    RemindMe", {
+          prevRoute: "Collections Library",
+          collectionId: collection.key,
+          isSelecting: true
+        });
+      } else {
+        Alert.alert(
+          "No Memos Exist",
+          "Please create more memos to add to a collection.",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ],
+          { cancelable: false }
+        );
+      }
+    };
 
     // const extractKey = ({ id }) => id;
 
@@ -108,7 +125,7 @@ function CollectionsLibrary(props) {
               collections.map(collection => 
                 <View style={{flexDirection: 'row', margin: 20}}>
                   {collection.data.map(item => renderItem(item))}
-                  <TouchableOpacity onPress={() => alert('adding to existing collection by id: ' + collection.key)}>
+                  <TouchableOpacity onPress={addingToCollection.bind(this,collection)}>
                     <MaterialIcons name="add" size={32} color="black" />
                   </TouchableOpacity>
                 </View>)
@@ -131,7 +148,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-      collections: state.collections.collections
+      collections: state.collections.collections,
+      data: state.app.data
     }
   }
   
