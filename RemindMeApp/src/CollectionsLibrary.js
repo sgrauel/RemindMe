@@ -130,11 +130,11 @@ function CollectionsLibrary(props) {
                 renderSectionHeader={HeaderButton}
               />:
               collections.map(collection => 
-                <View style={{flexDirection: 'row', margin: 20}}>
-                  {collection.data.map(item => renderItem(item))}
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', margin: 20}}>
                   <TouchableOpacity onPress={addingToCollection.bind(this,collection)}>
                     <MaterialIcons name="add" size={32} color="black" />
                   </TouchableOpacity>
+                  {collection.data.map(item => renderItem(item))}
                 </View>)
               }
             </View>
