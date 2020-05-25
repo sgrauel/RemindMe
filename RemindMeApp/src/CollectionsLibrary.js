@@ -53,6 +53,12 @@ function CollectionsLibrary(props) {
     }
 
     const FlatListItemSeparator = () => <View style={styles.line} />;
+    const HeaderButton = ({ section }) => 
+      <View>
+        <TouchableOpacity onPress={addingToCollection.bind(this,{ key: section.key })}>
+          <MaterialIcons name="add" size={42} color="black" />
+        </TouchableOpacity>
+      </View>;
 
     const addingToCollection = (collection) => {
       if (props.data.length !== 0) {
@@ -121,6 +127,7 @@ function CollectionsLibrary(props) {
                 data={collections}
                 renderItem={renderItem}
                 renderSectionFooter={FlatListItemSeparator}
+                renderSectionHeader={HeaderButton}
               />:
               collections.map(collection => 
                 <View style={{flexDirection: 'row', margin: 20}}>
