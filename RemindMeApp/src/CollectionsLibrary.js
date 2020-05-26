@@ -118,7 +118,7 @@ function CollectionsLibrary(props) {
                   props.navigation.navigate("    RemindMe");
                 }}
               />
-              <Text style={{marginTop: 10, marginLeft: 250}}>Memos</Text>
+              <Text style={{marginTop: 2, marginLeft: 250}}>Memos</Text>
             </View>
             <View style={{flex: 0.85, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap'}}>
               { Platform.OS == 'ios' ?

@@ -162,9 +162,9 @@ class VideoLibrary extends Component {
               this.props.navigation.navigate("Collections Library");
             }}
           />
-          <Text style={{marginTop: 10, marginLeft: 250}}>Collections</Text>
+          <Text style={{marginTop: 2, marginLeft: 250}}>Collections</Text>
         </View>
-        <View style={isSelecting ? {flex: 0.87} : {flex: 1}}>
+        <View style={isSelecting ? {flex: 0.84} : {flex: 1}}>
             <FlatList
               style={styles.container}
               data={data}
@@ -177,12 +177,13 @@ class VideoLibrary extends Component {
 
           { isSelecting ? (Platform.OS == 'ios' ? 
           <ThemeProvider>
-            <Button_ onPress={prevRoute === 'Collections Library' ? this.EndSelecting2.bind(this,collectionId) : this.EndSelecting} 
+            <Button_ style={styles.done} onPress={prevRoute === 'Collections Library' ? this.EndSelecting2.bind(this,collectionId) : this.EndSelecting} 
           title="Done" color="white" rounded inverted> I'm Done </Button_>
           </ThemeProvider> :
             <Button onPress={prevRoute === 'Collections Library' ? this.EndSelecting2.bind(this,collectionId) : this.EndSelecting} title="I'm Done" color="#0000ff" />) :
             <View></View>}
         </View>
+        <View style={isSelecting ? {flex: 0.03}: {flex: 0}}></View>
       </View>
       );
     }
@@ -203,6 +204,10 @@ class VideoLibrary extends Component {
     },
     selected: {
       backgroundColor: "#00BFFF"
+    },
+    done: {
+      marginLeft: 20,
+      marginRight: 20
     }
   });
 
