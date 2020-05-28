@@ -7,8 +7,9 @@ function PictureGallery(props) {
 
 
     const [isEditing,setIsEditing] = useState(false);
-    const { title, uri, text } = props.route.params;
+    const { id ,title, uri, text, prevRoute } = props.route.params;
     const [txt,setTxt] = useState(text);
+    const [ttl,setTtl] = useState(title);
 
     return (
         <Grid>
@@ -16,7 +17,15 @@ function PictureGallery(props) {
              <Row size={5}>
                 <Col></Col>
                 <Col size={2}>
-                    <Text style={styles.title}>{title}</Text>
+                    { isEditing ?
+                                    <TextInput
+                                        value={ttl}
+                                        onChangeText={(value) => setTtl(value)}
+                                        autoFocus
+                                        style={[styles.title,{ backgroundColor: 'white'}]}
+                                    /> :
+                                    <Text style={styles.title}>{ttl}</Text>
+                    }
                 </Col>
                 <Col></Col>
             </Row>
@@ -41,7 +50,14 @@ function PictureGallery(props) {
             </Row>
             <Row size={10}>
                 { isEditing ?
-                <TouchableOpacity onPress={() => setIsEditing(false)}>
+                <TouchableOpacity onPress={() => {
+                        console.log('prevRoute: ' + prevRoute);
+                        console.log('title: ' + ttl);
+                        console.log('text: ' + txt);
+                        console.log('id: ' + id);
+                        setIsEditing(false);
+                    }
+                }>
                     <FontAwesome5 style={styles.saveedit} name="save" size={35} color="black" />
                 </TouchableOpacity> :
                 <TouchableOpacity onPress={() => setIsEditing(true)} >
