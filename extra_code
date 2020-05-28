@@ -41,3 +41,31 @@
           />:
         <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} cover="fit" />}
 
+
+<Row size={35}>
+                <ScrollView>
+                    { isEditing ?
+                        <TextInput
+                        value={text}
+                        onChangeText={(value) => console.log(value)}
+                        autoFocus
+                        onBlur={() => setIsEditing(false)}
+                        style={styles.paragraph}
+                        /> :
+                        <Text
+                        style={styles.t2}
+                        onPress={() => setIsEditing(true)}
+                        style={styles.paragraph}
+                        >
+                            {text}
+                        </Text> 
+                    }
+                </ScrollView>
+            </Row>
+
+
+<Row size={35}>
+                <ScrollView>
+                    <Text style={styles.paragraph}>{text}</Text>
+                </ScrollView>
+            </Row>

@@ -1,14 +1,55 @@
-import * as React from 'react';
-import { View, Text, Image, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, Dimensions, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons'; 
 
 function PictureGallery(props) {
+
+
+    const [isEditing,setIsEditing] = useState(false);
     const { title, uri, text } = props.route.params;
+    const [txt,setTxt] = useState(text);
+
     return (
         <Grid>
-            <Row size={5}>
+             <Row size={5}></Row>
+             <Row size={5}>
+                <Col></Col>
+                <Col size={2}>
+                    <Text style={styles.title}>{title}</Text>
+                </Col>
+                <Col></Col>
             </Row>
-            <Row size={55}>
+            <Row size={20}>
+                        <ScrollView>
+                        { isEditing ?
+                                    <TextInput
+                                        value={txt}
+                                        onChangeText={(value) => setTxt(value)}
+                                        autoFocus
+                                        style={styles.paragraphEdit}
+                                        multiline={true}
+                                        numberOfLines={10}
+                                    /> :
+                                    <Text
+                                        style={styles.paragraph}
+                                    >
+                                        {txt}
+                                    </Text>
+                            }
+                        </ScrollView>
+            </Row>
+            <Row size={10}>
+                { isEditing ?
+                <TouchableOpacity onPress={() => setIsEditing(false)}>
+                    <FontAwesome5 style={styles.saveedit} name="save" size={35} color="black" />
+                </TouchableOpacity> :
+                <TouchableOpacity onPress={() => setIsEditing(true)} >
+                    <AntDesign style={styles.saveedit} name="edit" size={35} color="black" /> 
+                </TouchableOpacity>
+                }
+            </Row>
+            <Row size={60}>
                 <Col> 
                 </Col>
                 <Col size={2}></Col>
@@ -17,18 +58,6 @@ function PictureGallery(props) {
                     </View>
                 <Col>
                 </Col>
-            </Row>
-            <Row size={5}>
-                <Col></Col>
-                <Col size={2}>
-                    <Text style={styles.title}>{title}</Text>
-                </Col>
-                <Col></Col>
-            </Row>
-            <Row size={35}>
-                <ScrollView>
-                    <Text style={styles.paragraph}>{text}</Text>
-                </ScrollView>
             </Row>
         </Grid>
     );
@@ -49,8 +78,16 @@ const styles = StyleSheet.create({
     paragraph: {
         margin: 20
     },
+    paragraphEdit: {
+        margin: 20,
+        backgroundColor: 'white',
+        height: 100
+    },
     title: {
         textAlignVertical: "center",
         textAlign: "center"
+    },
+    saveedit: {
+        marginLeft: 350
     }
 });
