@@ -164,7 +164,7 @@ class VideoLibrary extends Component {
           />
           <Text style={{marginTop: 2, marginLeft: 250}}>Collections</Text>
         </View>
-        <View style={isSelecting ? {flex: 0.84} : {flex: 1}}>
+        <View style={isSelecting ? {flex: 0.82} : {flex: 1}}>
             <FlatList
               style={styles.container}
               data={data}
@@ -173,7 +173,7 @@ class VideoLibrary extends Component {
               keyExtractor={this.extractKey}
             />
         </View>
-        <View style={isSelecting ? {flex: 0.05} : {flex: 0}}>
+        <View style={isSelecting ? {flex: 0.07} : {flex: 0}}>
 
           { isSelecting ? (Platform.OS == 'ios' ? 
           <ThemeProvider>
