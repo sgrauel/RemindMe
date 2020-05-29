@@ -46,7 +46,7 @@ function CollectionsLibrary(props) {
      return (
         <TouchableHighlight onPress={() => ext !== 'jpg' ?
           props.navigation.navigate('Video Player',Object.assign({},item,{ prevRoute: 'Collections Library'})) 
-        : props.navigation.navigate('Picture Gallery',item)}>
+        : props.navigation.navigate('Picture Gallery',Object.assign({},item,{ prevRoute : 'Collections Library'})) }>
         <Image style={{ width: 100, height: 150 }} source={ext === 'mov' || ext === 'mp4' ? {uri : item.videoThumbnail} :{uri : item.uri}} cover="fit" />
       </TouchableHighlight>
      );

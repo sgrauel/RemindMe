@@ -3,7 +3,7 @@ import { View, Text, Image, Dimensions, StyleSheet, ScrollView, TextInput, Touch
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { dispatchUpdateMemo } from '../source/actions/app';
+import { dispatchUpdateMemo, dispatchUpdateCollection } from '../source/actions/app';
 
 function PictureGallery(props) {
 
@@ -12,6 +12,15 @@ function PictureGallery(props) {
     const { id ,title, uri, text, prevRoute } = props.route.params;
     const [txt,setTxt] = useState(text);
     const [ttl,setTtl] = useState(title);
+
+    const ColkeySearch = (collections, memoId) => {
+        for (let i = 0; i < collections.length; i++) {
+            for (let j = 0; j < collections[i]['data'].length; j++)
+                if (collections[i]['data'][j].id === memoId) {
+                    return collections[i]['key'];
+                }
+        }
+    }
 
     return (
         <Grid>
@@ -58,13 +67,25 @@ function PictureGallery(props) {
                         console.log('text: ' + txt);
                         console.log('id: ' + id);
 
-                        const { data } = props;
+                        const { data, collections } = props;
                         if (data) {
                             console.log("data: ");
                             console.log(data);
                         }
 
-                        props.dispatchUpdateMemo(id,ttl,txt);
+                        if (collections) {
+                            console.log("data: ");
+                            console.log(collections);
+                        }
+
+                        if (prevRoute === 'Collections Library') {
+                            const colId = ColkeySearch(collections,id);
+                            console.log('colId=' + colId);
+                            props.dispatchUpdateCollection(colId,id,ttl,txt);
+                        } else {
+                            props.dispatchUpdateMemo(id,ttl,txt);
+                        }
+
                         setIsEditing(false);
                     }
                 }>
@@ -92,12 +113,14 @@ function PictureGallery(props) {
 
 const mapStateToProps = state => {
     return {
-        data: state.app.data
+        data: state.app.data,
+        collections: state.collections.collections
     };
   }
   
   const mapDispatchToProps = {
-    dispatchUpdateMemo
+    dispatchUpdateMemo,
+    dispatchUpdateCollection
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(PictureGallery);

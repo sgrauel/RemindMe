@@ -1,6 +1,6 @@
 import { /*FETCH_ALL_DATA,*/ CREATE_MEMO, 
   SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION,
-  ADD_TO_COLLECTION, UPDATE_MEMO } from '../constants/app';
+  ADD_TO_COLLECTION, UPDATE_MEMO, UPDATE_COLLECTION } from '../constants/app';
 import { CommonActions } from '@react-navigation/core';
 
 const initialState = {
@@ -73,6 +73,16 @@ const collections_library = (state = [], action) => {
             }) :
             collection
       );
+      case UPDATE_COLLECTION:
+        return state.map(collection =>
+         collection.key === action.colId ? Object.assign({}, collection, { 
+              data: collection.data.map(item => item.id === action.memoId ?
+                  Object.assign({},item,{
+                    title: action.title,
+                    text: action.text
+                  }): item) 
+            }) : collection
+        );
     default:
       return state;
   }
@@ -87,6 +97,10 @@ export const collections = (state = initialState, action) => {
     case ADD_TO_COLLECTION:
       return {
         collections : collections_library(state.collections, action)
+      };
+    case UPDATE_COLLECTION:
+      return {
+        collections: collections_library(state.collections, action)
       }
     default:
       return state;
