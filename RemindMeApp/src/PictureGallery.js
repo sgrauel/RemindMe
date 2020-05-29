@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Image, Dimensions, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons'; 
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+import { dispatchUpdateMemo } from '../source/actions/app';
 
 function PictureGallery(props) {
 
@@ -55,6 +57,14 @@ function PictureGallery(props) {
                         console.log('title: ' + ttl);
                         console.log('text: ' + txt);
                         console.log('id: ' + id);
+
+                        const { data } = props;
+                        if (data) {
+                            console.log("data: ");
+                            console.log(data);
+                        }
+
+                        props.dispatchUpdateMemo(id,ttl,txt);
                         setIsEditing(false);
                     }
                 }>
@@ -79,7 +89,18 @@ function PictureGallery(props) {
     );
 }
 
-export default PictureGallery;
+
+const mapStateToProps = state => {
+    return {
+        data: state.app.data
+    };
+  }
+  
+  const mapDispatchToProps = {
+    dispatchUpdateMemo
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(PictureGallery);
 
 const win = Dimensions.get('window');
 

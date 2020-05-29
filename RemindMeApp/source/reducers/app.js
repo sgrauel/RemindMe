@@ -1,5 +1,6 @@
 import { /*FETCH_ALL_DATA,*/ CREATE_MEMO, 
-  SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION, ADD_TO_COLLECTION } from '../constants/app';
+  SELECT_ITEM, REMOVE_ITEMS, CREATE_COLLECTION,
+  ADD_TO_COLLECTION, UPDATE_MEMO } from '../constants/app';
 import { CommonActions } from '@react-navigation/core';
 
 const initialState = {
@@ -16,6 +17,12 @@ const video_library = (state = [], action) => {
                                action.item  : item);
     case REMOVE_ITEMS:
       return state.filter(item => !item.isSelected);
+    case UPDATE_MEMO:
+      return state.map(item => item.id === action.memoId ? 
+        Object.assign({},item,{
+          title: action.title,
+          text: action.text
+        }) : item);
     default:
       return state;
   }
@@ -42,6 +49,10 @@ export const app = (state = initialState, action) => {
       return {
         data: video_library(state.data, action)
       };
+    case UPDATE_MEMO:
+      return {
+        data: video_library(state.data, action)
+      }
     default:
       return state;
   }
