@@ -4,40 +4,8 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Collection, ThemeProvider } from 'react-native-ios-kit';
 import { MaterialIcons } from '@expo/vector-icons';
-import * as VideoThumbnails from 'expo-video-thumbnails';
-// import { uid } from 'react-uid';
 
 function CollectionsLibrary(props) {
-
-    /*
-    const renderCollection = ({ item }) => {
-
-      const renderItem = (item) => {
-        const ext = item.uri.split('.').pop();
-         return (Platform.OS == 'ios' && ext !== 'jpg'? 
-          <Video
-            source={{ uri: item.uri }}
-            usePoster
-            shouldPlay={false}
-            resizeMode="cover"
-            />:
-          <Image style={{ width: 100, height: 150 }} source={{uri : item.uri}} cover="fit" />);
-      }
-
-      return (
-          <Collection
-            numberOfColumns={4}
-            data={item}
-            renderItem={renderItem}
-      
-            renderSectionHeader={({ section }) => <Title1>{section.title}</Title1>}
-            keyExtractor={(item, index) => `${item}_${index}`}
-            refreshing={this.state.refreshing}
-            onRefresh={this.refresh}
-          />
-      );
-    }
-    */
 
    const renderItem = item => {
 
@@ -47,14 +15,14 @@ function CollectionsLibrary(props) {
         <TouchableHighlight onPress={() => ext !== 'jpg' ?
           props.navigation.navigate('Video Player',Object.assign({},item,{ prevRoute: 'Collections Library'})) 
         : props.navigation.navigate('Picture Gallery',Object.assign({},item,{ prevRoute : 'Collections Library'})) }>
-        <Image style={{ width: 100, height: 150 }} source={ext === 'mov' || ext === 'mp4' ? {uri : item.videoThumbnail} :{uri : item.uri}} cover="fit" />
+        <Image style={{ width: 100, height: 150 }} source={ext === 'mov' || ext === 'mp4' ? {uri : item.videoThumbnail} :{uri : item.uri}} />
       </TouchableHighlight>
      );
     }
 
     const FlatListItemSeparator = () => <View style={styles.line} />;
     const HeaderButton = ({ section }) => 
-      <View>
+      <View style={styles.colheader}>
         <TouchableOpacity onPress={addingToCollection.bind(this,{ key: section.key })}>
           <MaterialIcons name="add" size={42} color="black" />
         </TouchableOpacity>
@@ -88,24 +56,6 @@ function CollectionsLibrary(props) {
         console.log(collections);
         console.log("collections[0] = " + collections[0]);
     }
-
-    /*
-    let data = collections.filter(xs => xs.length == 0 ? false : true);
-    data = data.map(xs =>
-      Object.assign({},{
-        key: uid(xs),
-        data: xs 
-      })
-    );
-
-    console.log('data: ' + data);
-    */
-
-   // filter out null list produced when collections is a singleton
-   /*
-   const data = collections.filter(xs => xs.data.length == 0 ? false : true);
-   */
-   // console.log('data: ' + data);
 
     return (
         <ThemeProvider>
@@ -148,6 +98,9 @@ const styles = StyleSheet.create({
       height: 2,
       width: "100%",
       backgroundColor:"black"
+    },
+    colheader: {
+      backgroundColor: '#FFFAFA'
     }
   });
 
